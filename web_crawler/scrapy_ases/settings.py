@@ -19,7 +19,10 @@ NEWSPIDER_MODULE = 'scrapy_ases.spiders'
 #USER_AGENT = 'scrapy_ases (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
+
+# Disable filtering of duplicate requests
+DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
