@@ -25,7 +25,7 @@ SECRET_KEY = 'w*-p3lw#t+3b96eo)%2a%ye77e1f^o46hk$bg37b5wyu9ua3(s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.c9users.io', 'localhost']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djangoappdb',
+        'USER': 'djangoappdbuser',
+        'PASSWORD': 'password', # input real password here
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -103,9 +107,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
