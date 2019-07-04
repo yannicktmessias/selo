@@ -11,25 +11,25 @@ from .validators import NumericValidator
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, name, rf, email, password, **extra_fields):
+    def _create_user(self, name, rf, cpf, rg, email, password, **extra_fields):
         """
-        Create and save a user with the given name, rf, email, and password.
+        Create and save a user with the given name, rf, cpf, rg, email and password.
         """
         if not rf:
             raise ValueError('The given RF must be set')
         email = self.normalize_email(email)
         name = self.model.normalize_username(name)
-        user = self.model(name=name, rf=rf, email=email, **extra_fields)
+        user = self.model(name=name, rf=rf, cpf=cpf, rg=rg, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, name, rf, email=None, password=None, **extra_fields):
+    def create_user(self, name, rf, cpf, rg, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(name, rf, email, password, **extra_fields)
+        return self._create_user(name, rf, cpf, rg, email, password, **extra_fields)
 
-    def create_superuser(self, name, rf, email, password, **extra_fields):
+    def create_superuser(self, name, rf, cpf, rg, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(name, rf, email, password, **extra_fields)
+        return self._create_user(name, rf, cpf, rg, email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(
@@ -59,7 +59,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         _('email address'),
         help_text = _('Required.'),
-        blank = True,
     )
     cpf = models.CharField(
         _('CPF'),
@@ -70,7 +69,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         error_messages={
             'unique': _("A user with that CPF already exists."),
         },
-        blank = True,
     )
     rg = models.CharField(
         _('RG'),
@@ -81,7 +79,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         error_messages={
             'unique': _("A user with that RG already exists."),
         },
-        blank = True,
+    )
+    READ_ONLY = 'RO'
+    READ_WRITE = 'RW'
+    PERMISSIONS = [
+        (READ_ONLY, _('read only')),
+        (READ_WRITE, _('read and write')),
+    ]
+    permissions = models.CharField(
+        max_length=2,
+        choices=PERMISSIONS,
+        default=READ_ONLY,
+    )
+    is_admin = models.BooleanField(
+        _('administrator status'),
+        default=False,
     )
     is_staff = models.BooleanField(
         _('staff status'),
@@ -102,7 +114,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'rf'
-    REQUIRED_FIELDS = ['name', 'email']
+    REQUIRED_FIELDS = ['name', 'email', 'cpf', 'rg']
 
     class Meta:
         verbose_name = _('user')
@@ -129,4 +141,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
-        return self.get_short_name()
+        return self.name

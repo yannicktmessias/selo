@@ -16,14 +16,14 @@ class UserAdmin(user_admin):
         (None, {'fields': ('name', 'rf', 'password')}),
         (_('Personal info'), {'fields': ('email', 'cpf', 'rg')}),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+            'fields': ('is_admin', 'permissions', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'rf', 'password1', 'password2'),
+            'fields': ('name', 'rf', 'email', 'cpf', 'rg', 'is_admin', 'permissions', 'password1', 'password2'),
         }),
     )
     list_display = ('name', 'rf', 'email', 'is_staff', 'is_active',)

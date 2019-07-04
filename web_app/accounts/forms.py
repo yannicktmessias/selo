@@ -14,6 +14,12 @@ class UserCreationForm(user_creation_form):
             'name',
             'rf',
             'email',
+            'cpf',
+            'rg',
+            'permissions',
+            'is_admin',
+            'password1',
+            'password2',
         )
 
 class UserChangeForm(user_change_form):
@@ -24,4 +30,10 @@ class UserChangeForm(user_change_form):
             'name',
             'rf',
             'email',
+            'cpf',
+            'rg',
+            'permissions',
+            'is_admin',
+            'is_active',
+            'password',
         )
