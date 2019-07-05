@@ -1,12 +1,54 @@
 {% extends '_base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block accessibility_menu %}
+                            <li>
+                                <a href="#login" accesskey="1">Ir para o acesso ao robô</a> <span class="label">[1]</span>
+                            </li>
+{% endblock %}
 
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+            <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4 login-box">
+                <div class="row login-header align-middle">
+                    <h1 class="text-center">
+                        Entrar
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 login-form w-100">
+                        <form id="login" method="POST">
+                            {% csrf_token %}
+                            <!-- {{form.as_p}} -->
+                            <div class="form-group">
+                                <label class="w-100" for="rf">RF<br />
+                                    <input name="username" id="rf" class="form-control" type="text" />
+                                </label>
+                            </div>
+                            <!-- form-group// -->
+                            <div class="form-group">
+                                <label class="w-100" for="password">Senha <br />
+                                    <input name="password" id="password" class="form-control" type="password">
+                                </label>
+                            </div>
+                            <div class="row">
+                                <!-- form-group// -->
+                                <div class="form-group col-md-6">
+                                    <!--
+                                    <div class="checkbox">
+                                        <label class="remember" for="lembrar"> <input name="lembrar" id="lembrar" type="checkbox"> Lembrar
+                                        </label>
+                                        <br />
+                                        <a href="forgot_password.html"> Esqueci minha senha</a>
+                                    </div>
+                                    -->
+                                    <!-- checkbox .// -->
+                                </div>
+                                <!-- form-group// -->
+                                <div class="form-group col-md-6">
+                                    <button class="btn btn-primary btn-block login-btn" type="submit"> Acessar </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 {% endblock %}
