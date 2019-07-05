@@ -1,0 +1,403 @@
+html,
+body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.header {
+    background-color: #1E1A17;
+    padding: 5px 15px 15px 15px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.header-logo-smped,
+.header-logo-prefeitura {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.header-title,
+.header-title:visited,
+.header-title:hover,
+.header-title:active {
+    font-weight: bold;
+    font-size: 24px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-accessibility {
+    font-size: 12px;
+    color: #fff;
+}
+
+.login-box {
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-top: 100px;
+}
+
+.login-header {
+    background-color: #f5f5f5;
+    border: 0.5px solid #CCCCCC;
+    box-sizing: border-box;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    padding: 15px;
+}
+
+.login-btn {
+    background: #1F497D;
+    border: 2px solid #1F497D;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.login-btn:hover {
+    background: #fff;
+    border: 2px solid #1F497D;
+    color: #1F497D;
+}
+
+.action-btn {
+    background: #1F497D;
+    border: 2px solid #1F497D;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.action-btn:hover {
+    background: #fff;
+    border: 2px solid #1F497D;
+    color: #1F497D;
+}
+
+.red-btn {
+    background: #ad0600;
+    border: 2px solid #ad0600;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.red-btn:hover {
+    background: #fff;
+    border: 2px solid #ad0600;
+    color: #ad0600;
+}
+
+.remember {
+    color: #666666;
+}
+
+.fill {
+    min-height: 100vh;
+}
+
+.content-box {
+    margin-top: 20px;
+}
+
+.thead-selos {
+    background-color: #eee;
+}
+
+.thead-selos tr {
+    height: 40px;
+}
+
+.tbody-selos tr {
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.thead-selos tr th,
+.tbody-selos tr td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.content-title {
+    margin: 0px;
+}
+
+.form-check-label {
+    padding-left: 5px;
+}
+
+.select-all-box {
+    margin-bottom: 0px;
+    padding-top: 15px;
+    float: left;
+}
+
+.actions-box {
+    float: right;
+}
+
+.row.header {
+    margin: 0px;
+}
+
+.login-box>label {
+    width: 100%;
+}
+
+.button-list {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-list>button {
+    width: 120px;
+}
+
+.thead-links {
+    background-color: #eee;
+}
+
+.thead-links tr {
+    height: 40px;
+}
+
+.tbody-links tr {
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.thead-links tr th,
+.tbody-links tr td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.thead-links tr th:first-child,
+.tbody-links tr td:first-child {
+    border-right: 1px solid #BBBBBB;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+#accessibility {
+    background-color: transparent;
+    margin-bottom: 10px;
+}
+
+.domain-detail-link {
+    color: inherit;
+}
+
+.need-attention {
+    background-color: #ad0600;
+    color: #fff;
+}
+
+.problem-url {
+    background-color: #c9ab03;
+    color: #000;
+}
+
+.info-box {
+    border: 1px solid #1E1A17;
+    margin-left: 15px;
+    border-radius: 5px;
+}
+
+.justify-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.links-result-box {
+    width: 120px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    border-radius: 5px;
+    font-size: 24px;
+}
+
+.green {
+    background-color: #228B22;
+    color: #fff;
+}
+
+.red {
+    background-color: #ad0600;
+    color: #fff;
+}
+
+.last-run-box {
+    font-size: 14px;
+    text-align: center;
+}
+
+.mg-l-15 {
+    margin-left: 15px;
+}
+
+.links-result-wrapper {
+    display: inline-block;
+}
+
+.btn-light {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn-light:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+}
+
+.btn-light:focus,
+.btn-light.focus {
+    box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+}
+
+.btn-light.disabled,
+.btn-light:disabled {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn-light:not(:disabled):not(.disabled):active,
+.btn-light:not(:disabled):not(.disabled).active,
+.show>.btn-light.dropdown-toggle {
+    color: #212529;
+    background-color: #dae0e5;
+    border-color: #d3d9df;
+}
+
+.btn-light:not(:disabled):not(.disabled):active:focus,
+.btn-light:not(:disabled):not(.disabled).active:focus,
+.show>.btn-light.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+}
+
+.btn-outline-dark {
+    color: #343a40;
+    background-color: transparent;
+    background-image: none;
+    border-color: #343a40;
+}
+
+.btn-outline-dark:hover {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.btn-outline-dark:focus,
+.btn-outline-dark.focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.btn-outline-dark.disabled,
+.btn-outline-dark:disabled {
+    color: #343a40;
+    background-color: transparent;
+}
+
+.btn-outline-dark:not(:disabled):not(.disabled):active,
+.btn-outline-dark:not(:disabled):not(.disabled).active,
+.show>.btn-outline-dark.dropdown-toggle {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.btn-outline-dark:not(:disabled):not(.disabled):active:focus,
+.btn-outline-dark:not(:disabled):not(.disabled).active:focus,
+.show>.btn-outline-dark.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.selos-option {
+    border-top: 1px solid #BBBBBB;
+    text-align: right;
+    margin: 5px -15px 5px -15px;
+    padding: 5px;
+}
+
+.continue-btn {
+    margin-top: 15px;
+}
+
+.mb-3 {
+    margin-bottom: 3rem;
+}
+
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #ccc;
+}
+
+@media only screen and (max-width: 768px) {
+    .header-title,
+    .header-title:visited,
+    .header-title:hover,
+    .header-title:active {
+        font-size: 20px;
+    }
+    .content-box {
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .mt-1-md {
+        margin-top: 1rem;
+    }
+}

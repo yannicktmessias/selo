@@ -25,7 +25,7 @@ SECRET_KEY = 'w*-p3lw#t+3b96eo)%2a%ye77e1f^o46hk$bg37b5wyu9ua3(s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.c9users.io', 'localhost']
+ALLOWED_HOSTS = ['.c9users.io', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -123,9 +123,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),
+]
+
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
