@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Informações do Gestor</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+            	<p>Chave Primária: {{ usr.pk }}</p>
+                <p>Nome completo: {{ usr.name }}</p>
+                <p>RF: {{ usr.rf }}</p>
+                <p>Email: {{ usr.email }}</p>
+                <p>RG: {{ usr.rg }}</p>
+                <p>CPF: {{ usr.cpf }}</p>
+                <p>Permissão: {{ usr.permissions }}</p>
+                <p>Administrador: {{ usr.is_admin }}</p>
+                <p>
+                    <a href="{% url 'edit_user' usr.rf%}">Editar</a>
+                    <a href="{% url 'delete_user' usr.rf%}">Excluir</a>
+                </p>
+            </div>
+{% endblock %}

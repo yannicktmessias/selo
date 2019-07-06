@@ -1,0 +1,11 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Todos os Gestores</h1>
+{% endblock %}
+
+{% block content %}
+            {% for usr in users %}
+            <h3><a href="{% url 'user_info' usr.rf %}"> [{{ usr.rf }}] : {{ usr.name }} </a></h3>
+            {% endfor %}
+{% endblock %}

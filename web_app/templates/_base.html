@@ -109,10 +109,11 @@
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="search_gestor.html">GESTORES</a>
+                                        <a href="{% url 'list_users' %}">GESTORES</a>
                                         <ul>
-                                            <li><a href="search_gestor.html">Pesquisar Gestor</a></li>
-                                            <li><a href="new_gestor.html">Criar Gestor</a></li>
+                                            <li><a href="{% url 'user_info' user.rf%}">Minha conta</a></li>
+                                            <li><a href="{% url 'search_user' %}">Pesquisar Gestor</a></li>
+                                            <li><a href="{% url 'new_user' %}">Novo Gestor</a></li>
                                         </ul>
                                     </li>
                                     <li>

@@ -17,18 +17,18 @@
                     <div class="col-xs-12 login-form w-100">
                         <form id="login" method="POST">
                             {% csrf_token %}
-                            <!-- {{form.as_p}} -->
                             <div class="form-group">
                                 <label class="w-100" for="rf">RF<br />
-                                    <input name="username" id="rf" class="form-control" type="text" />
+                                    <input name="username" id="rf" class="form-control" autofocus required type="text" />
                                 </label>
                             </div>
                             <!-- form-group// -->
                             <div class="form-group">
                                 <label class="w-100" for="password">Senha <br />
-                                    <input name="password" id="password" class="form-control" type="password">
+                                    <input name="password" id="password" class="form-control" required type="password"/>
                                 </label>
                             </div>
+                            {{ form.non_field_errors }}
                             <div class="row">
                                 <!-- form-group// -->
                                 <div class="form-group col-md-6">
