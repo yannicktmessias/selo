@@ -34,8 +34,16 @@ def edit_user(request, rf = None):
 
 @login_required(login_url='login')
 def delete_user(request, rf):
-	User.objects.get(rf=rf).delete()
-	return redirect('list_users')
+	return redirect('delete_user_confirmation', rf=rf)
+
+@login_required(login_url='login')
+def delete_user_confirmation(request, rf):
+	usr = User.objects.get(rf=rf)
+	if request.method == 'POST':
+		User.objects.get(rf=rf).delete()
+		return redirect('list_users')
+	else:
+		return render(request, 'accounts/delete_user_confirmation.html', {'usr': usr})
 
 @login_required(login_url='login')
 def new_user(request):
@@ -60,4 +68,6 @@ def list_users(request):
 
 @login_required(login_url='login')
 def search_user(request):
-	pass
+	# provisório
+	users = User.objects.all()
+	return render(request, 'accounts/list_users.html', {'users': users})

@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:rf>/', views.user_info, name='user_info'),
     path('<int:rf>/editar/', views.edit_user, name='edit_user'),
     path('<int:rf>/excluir/', views.delete_user, name='delete_user'),
+    path('<int:rf>/confirmar_excluir/', views.delete_user_confirmation, name='delete_user_confirmation'),
     path('novo/', views.new_user, name='new_user'),
     path('todos/', views.list_users, name='list_users'),
     path('procurar/', views.search_user, name='search_user'),

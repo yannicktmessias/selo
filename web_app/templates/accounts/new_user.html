@@ -8,8 +8,70 @@
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
                 <form method="post">
                 	{% csrf_token %}
-                	{{ form.as_p }}
-                	<button class="btn btn-primary" type="submit">Salvar</button>
+                	<div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="name">Nome completo</label>
+                            <input type="text" name="name" maxlength="100" class="form-control" id="name" placeholder="Nome completo" value="{% if form.name.value != None %}{{form.name.value}}{% endif %}" autofocus required>
+                            {{ form.name.errors }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="rf">RF</label>
+                            <input type="text" name="rf" maxlength="30" class="form-control" id="rf" placeholder="RF" value="{% if form.rf.value != None %}{{form.rf.value}}{% endif %}" required>
+                            {{ form.rf.errors }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" maxlength="254" class="form-control" id="email" placeholder="Email" value="{% if form.email.value != None %}{{form.email.value}}{% endif %}" required>
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="cpf">CPF</label>
+                            <input type="text" name="cpf" maxlength="15" class="form-control" id="cpf" placeholder="CPF" value="{% if form.cpf.value != None %}{{form.cpf.value}}{% endif %}" required>
+                            {{ form.cpf.errors }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="rg">RG</label>
+                            <input type="text" name="rg" maxlength="15" class="form-control" id="rg" placeholder="RG" value="{% if form.rg.value != None %}{{form.rg.value}}{% endif %}" required>
+                            {{ form.rg.errors }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="password1">Senha</label>
+                            <input type="password" name="password1" class="form-control" id="password1" placeholder="Senha" required>
+                            {{ form.password1.errors }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="password2">Confirmação da senha</label>
+                            <input type="password" name="password2" class="form-control" id="password2" placeholder="Confirmação da senha" required>
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                        	<label for="permissions">Permissões</label> <br/>
+                        	<select name="permissions" id="permissions">
+								<option value="RO" {% if form.permissions.value == 'RO' %}selected{% endif %}>somente leitura</option>
+
+								<option value="RW" {% if form.permissions.value == 'RW' %}selected{% endif %}>leitura e escrita</option>
+
+							</select>
+                            {{ form.permissions.errors }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="is_admin">Status de administrator</label> <br/>
+                            <input type="checkbox" name="is_admin" id="is_admin" {% if form.is_admin.value %}checked{% endif %}>
+                            {{ form.is_admin.errors }}
+                        </div>
+                    </div>
+                    {{ form.non_field_errors }}
+                    <div class="row mb-3">
+                    	<div class="col-md-1">
+                			<button class="btn btn-primary" type="submit">Salvar</button>
+                		</div>
+                	</div>
                 </form>
             </div>
 {% endblock %}

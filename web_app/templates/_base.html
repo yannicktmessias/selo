@@ -42,8 +42,8 @@
                 </div>
                 <div class="col-xs-12 col-md-3 text-right">
                     {% if user.is_authenticated %}
-                    <p>Acessando como
-                        <b>{{ user.name }}</b>, <a href="{% url 'logout' %}">Sair</a></p>
+                    <p>Acessando como <b>{{ user.name }}</b>, <a href="{% url 'logout' %}">Sair</a>
+                    </p>
                     {% endif %}
                 </div>
             </div>
@@ -91,7 +91,9 @@
                                 <span class="icon-bar"></span> 
                             </button>
                             <a class="navbar-brand" href="#">
+                                {% block navbar_title %}
                                 <h1 class="nav-title">Lista de Selos Concedidos</h1>
+                                {% endblock %}
                             </a>
                         </div>
                         <div class="collapse navbar-collapse panel-nav" id="bs-example-navbar-collapse-1">

@@ -1,22 +1,74 @@
 {% extends '_base.html' %}
 
 {% block navbar_title %}
+                                {% if user.rf == usr.rf %}
+                                <h1 class="nav-title">Minha conta</h1>
+                                {% else %}
                                 <h1 class="nav-title">Informações do Gestor</h1>
+                                {% endif %}
 {% endblock %}
 
 {% block content %}
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
-            	<p>Chave Primária: {{ usr.pk }}</p>
-                <p>Nome completo: {{ usr.name }}</p>
-                <p>RF: {{ usr.rf }}</p>
-                <p>Email: {{ usr.email }}</p>
-                <p>RG: {{ usr.rg }}</p>
-                <p>CPF: {{ usr.cpf }}</p>
-                <p>Permissão: {{ usr.permissions }}</p>
-                <p>Administrador: {{ usr.is_admin }}</p>
-                <p>
-                    <a href="{% url 'edit_user' usr.rf%}">Editar</a>
-                    <a href="{% url 'delete_user' usr.rf%}">Excluir</a>
-                </p>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label for="name">Nome completo:</label>
+                        <h4>{{ usr.name }}</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="rf">RF</label>
+                        <h4>{{ usr.rf }}</h4>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="email">Email</label>
+                        <h4>{{ usr.email }}</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="cpf">CPF</label>
+                        <h4>{{ usr.cpf }}</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="rg">RG</label>
+                        <h4>{{ usr.rg }}</h4>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="permissions">Permissões</label> <br/>
+                        {% if usr.permissions == 'RO' %}
+                        <h4>somente leitura</h4>
+                        {% elif usr.permissions == 'RW' %}
+                        <h4>leitura e escrita</h4>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="is_admin">Status de administrator</label> <br/>
+                        {% if usr.is_admin %}
+                        <h4>sim</h4>
+                        {% else %}
+                        <h4>não</h4>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="is_active">Gestor ativo</label> <br/>
+                        {% if usr.is_active %}
+                        <h4>sim</h4>
+                        {% else %}
+                        <h4>não</h4>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-1">
+                        <a class="btn btn-primary" href="{% url 'edit_user' usr.rf%}">Editar</a>
+                    </div>
+                    <div class="col-md-1">
+                        {% if user.rf != usr.rf %}
+                        <a class="btn btn-primary" href="{% url 'delete_user' usr.rf%}">Excluir</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
 {% endblock %}
