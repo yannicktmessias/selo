@@ -10,32 +10,32 @@
 
 {% block content %}
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
-                <div class="row mb-3">
-                    <div class="col-md-8">
-                        <label for="name">Nome completo:</label>
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="name">Nome completo</label>
                         <h4>{{ usr.name }}</h4>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <label for="rf">RF</label>
                         <h4>{{ usr.rf }}</h4>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
                         <label for="email">Email</label>
                         <h4>{{ usr.email }}</h4>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <label for="cpf">CPF</label>
                         <h4>{{ usr.cpf }}</h4>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <label for="rg">RG</label>
                         <h4>{{ usr.rg }}</h4>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
                         <label for="permissions">Permissões</label> <br/>
                         {% if usr.permissions == 'RO' %}
                         <h4>somente leitura</h4>
@@ -43,7 +43,7 @@
                         <h4>leitura e escrita</h4>
                         {% endif %}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <label for="is_admin">Status de administrator</label> <br/>
                         {% if usr.is_admin %}
                         <h4>sim</h4>
@@ -51,7 +51,7 @@
                         <h4>não</h4>
                         {% endif %}
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-3">
                         <label for="is_active">Gestor ativo</label> <br/>
                         {% if usr.is_active %}
                         <h4>sim</h4>
@@ -60,13 +60,16 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-1">
-                        <a class="btn btn-primary" href="{% url 'edit_user' usr.rf%}">Editar</a>
+                <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <a class="btn btn-primary btn-block" href="{% url 'edit_user' usr.rf%}">Editar</a>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-3 mb-3">
+                        <a class="btn btn-primary btn-block" href="{% url 'change_password' usr.rf%}">Trocar senha</a>
+                    </div>
+                    <div class="col-md-2 mb-3">
                         {% if user.rf != usr.rf %}
-                        <a class="btn btn-primary" href="{% url 'delete_user' usr.rf%}">Excluir</a>
+                        <a class="btn btn-primary btn-block" href="{% url 'delete_user' usr.rf%}">Excluir</a>
                         {% endif %}
                     </div>
                 </div>

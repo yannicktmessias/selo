@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.user_info, name='user_info'),
     path('<int:rf>/', views.user_info, name='user_info'),
     path('<int:rf>/editar/', views.edit_user, name='edit_user'),
+    path('<int:rf>/trocar_senha/', views.change_password, name='change_password'),
     path('<int:rf>/excluir/', views.delete_user, name='delete_user'),
     path('<int:rf>/confirmar_excluir/', views.delete_user_confirmation, name='delete_user_confirmation'),
     path('novo/', views.new_user, name='new_user'),

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserCreationForm, UserChangeForm
+from .forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from .models import User
 
 @login_required(login_url='login')
@@ -22,7 +22,7 @@ def edit_user(request, rf = None):
 
 		if form.is_valid():
 			form.save()
-			return redirect('user_info', rf=rf)
+			return redirect('user_info', rf=request.POST['rf'])
 		
 		args = {'form': form}
 		return render(request, 'accounts/edit_user.html', args)
@@ -31,6 +31,27 @@ def edit_user(request, rf = None):
 
 		args = {'form': form}
 		return render(request, 'accounts/edit_user.html', args)
+
+@login_required(login_url='login')
+def change_password(request, rf = None):
+	if rf == None:
+		rf = request.user.rf
+	usr = User.objects.get(rf=rf)
+
+	if request.method == 'POST':
+		form = SetPasswordForm(user=usr, data=request.POST)
+
+		if form.is_valid():
+			form.save()
+			return redirect('user_info', rf=rf)
+		
+		args = {'form': form}
+		return render(request, 'accounts/change_password.html', args)
+	else:
+		form = SetPasswordForm(user=usr)
+
+		args = {'form': form}
+		return render(request, 'accounts/change_password.html', args)
 
 @login_required(login_url='login')
 def delete_user(request, rf):
@@ -68,6 +89,18 @@ def list_users(request):
 
 @login_required(login_url='login')
 def search_user(request):
-	# provisório
-	users = User.objects.all()
-	return render(request, 'accounts/list_users.html', {'users': users})
+	search_term = request.GET.get('search_for', '')
+	where = request.GET.get('in', '')
+	if where == 'name':
+		users = User.objects.filter(name__icontains=search_term)
+		where = 'nome'
+	elif where == 'rf':
+		users = User.objects.filter(rf__icontains=search_term)
+		where = 'RF'
+	elif where == 'email':
+		users = User.objects.filter(email__icontains=search_term)
+	else:
+		users = User.objects.all()
+		where = 'indefinido'
+	args = {'search_term': search_term, 'where': where, 'users': users}
+	return render(request, 'accounts/search_user.html', args)

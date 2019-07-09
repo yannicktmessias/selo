@@ -43,12 +43,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(
         _('full name'),
-        max_length = 100,
+        max_length = 60,
         help_text = _('Required.'),
     )
     rf = models.CharField(
         _('RF'),
-        max_length = 30,
+        max_length = 15,
         unique = True,
         help_text = _('Required.'),
         validators = [NumericValidator],

@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import (
     UserCreationForm as user_creation_form,
     UserChangeForm as user_change_form,
+    SetPasswordForm,
 )
 
 from .models import User
