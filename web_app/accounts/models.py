@@ -32,6 +32,8 @@ class UserManager(BaseUserManager):
     def create_superuser(self, name, rf, cpf, rg, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('permissions', 'RW')
+        extra_fields.setdefault('is_admin', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -51,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length = 15,
         unique = True,
         help_text = _('Required.'),
-        validators = [NumericValidator],
+        validators = [NumericValidator()],
         error_messages={
             'unique': _("A user with that RF already exists."),
         },
@@ -65,7 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length = 15,
         unique = True,
         help_text = _('Required.'),
-        validators = [NumericValidator],
+        validators = [NumericValidator()],
         error_messages={
             'unique': _("A user with that CPF already exists."),
         },
@@ -75,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length = 15,
         unique = True,
         help_text = _('Required.'),
-        validators = [NumericValidator],
+        validators = [NumericValidator()],
         error_messages={
             'unique': _("A user with that RG already exists."),
         },
