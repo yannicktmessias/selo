@@ -29,7 +29,6 @@ class UserChangeForm(user_change_form):
         model = User
         fields = (
             'name',
-            'rf',
             'email',
             'cpf',
             'rg',

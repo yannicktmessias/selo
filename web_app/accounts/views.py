@@ -22,14 +22,14 @@ def edit_user(request, rf = None):
 
 		if form.is_valid():
 			form.save()
-			return redirect('user_info', rf=request.POST['rf'])
+			return redirect('user_info', rf=rf)
 		
-		args = {'form': form}
+		args = {'form': form, 'usr': usr}
 		return render(request, 'accounts/edit_user.html', args)
 	else:
 		form = UserChangeForm(instance=usr)
 
-		args = {'form': form}
+		args = {'form': form, 'usr': usr}
 		return render(request, 'accounts/edit_user.html', args)
 
 @login_required(login_url='login')
@@ -60,8 +60,9 @@ def delete_user(request, rf):
 @login_required(login_url='login')
 def delete_user_confirmation(request, rf):
 	usr = User.objects.get(rf=rf)
+	
 	if request.method == 'POST':
-		User.objects.get(rf=rf).delete()
+		usr.delete()
 		return redirect('list_users')
 	else:
 		return render(request, 'accounts/delete_user_confirmation.html', {'usr': usr})
@@ -93,12 +94,13 @@ def search_user(request):
 	where = request.GET.get('in', '')
 	if where == 'name':
 		users = User.objects.filter(name__icontains=search_term)
-		where = 'nome'
+		where = 'Nome'
 	elif where == 'rf':
 		users = User.objects.filter(rf__icontains=search_term)
 		where = 'RF'
 	elif where == 'email':
 		users = User.objects.filter(email__icontains=search_term)
+		where = 'Email'
 	else:
 		users = User.objects.all()
 		where = 'indefinido'
