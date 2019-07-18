@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+from .deploy_config import *
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +22,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'w*-p3lw#t+3b96eo)%2a%ye77e1f^o46hk$bg37b5wyu9ua3(s'
+
+# Set this at deploy_config.py
+# SECRET_KEY = 'w*-p3lw#t+3b96eo)%2a%ye77e1f^o46hk$bg37b5wyu9ua3(s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['.c9users.io', 'localhost', '127.0.0.1']
+# Set this at deploy_config.py
+# DEBUG = True
+
+# Set this at deploy_config.py
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -77,16 +84,17 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangoappdb',
-        'USER': 'djangoappdbuser',
-        'PASSWORD': 'password', # input real password here
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# Set this at deploy_config.py
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'djangoappdb',
+#         'USER': 'djangoappdbuser',
+#         'PASSWORD': 'password', # input real password here
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation

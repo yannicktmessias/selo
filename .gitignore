@@ -4,3 +4,4 @@ __pycache__
 env
 /static
 .DS_Store
+deploy_config.py
