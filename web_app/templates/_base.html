@@ -105,8 +105,8 @@
                                             <li><a href="home.html">Lista de Selos Concedidos</a></li>
                                             <li><a href="new_selo.html">Adicionar Novo Selo</a></li>
                                             <li><a href="search_selo.html">Pesquisar Selo</a></li>
-                                            <li><a href="new_applicant.html">Adicionar Requerente</a></li>
-                                            <li><a href="search_applicant.html">Pesquisar Requerente</a></li>
+                                            <li><a href="{% url 'new_applicant' %}">Adicionar Requerente</a></li>
+                                            <li><a href="{% url 'search_applicant' %}">Pesquisar Requerente</a></li>
                                             <li><a href="robot.html">Parâmetros do Robô</a></li>
                                         </ul>
                                     </li>
@@ -149,6 +149,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js "></script>
     <script src="https://www.prefeitura.sp.gov.br/cidade/js/bootstrap-3.3.7.min.js "></script>
     <script src="https://www.prefeitura.sp.gov.br/cidade/js/main.19.4.29.193724-min.js "></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="{% static 'scripts/main.js' %}"></script>
 </body>
 

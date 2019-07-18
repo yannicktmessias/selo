@@ -1,0 +1,87 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Informações do Requerente</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <div class="row flex items-center">
+                    <div class="col-xs-12 col-md-10">
+                        <h2>Requerente: {{ applicant.name }}</h2>
+                    </div>
+                    <div class="col-xs-12 col-md-1 float-right">
+                        <div class="btn-group" dropdown>
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                <span class="caret"></span>
+                                <span class="sr-only">Ações para o requerente {{ applicant.name }}</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li role="menuitem">
+                                    <a href="{% url 'edit_applicant' applicant.cpf_cnpj %}">
+                                        Editar requerente
+                                    </a>
+                                </li>
+                                {% if legal_representative %}
+                                <li role="menuitem">
+                                    <a href="{% url 'edit_legal_representative' applicant.cpf_cnpj %}">
+                                        Editar representante legal
+                                    </a>
+                                </li>
+                                <li role="menuitem">
+                                    <a href="{% url 'delete_legal_representative' applicant.cpf_cnpj %}">
+                                        Excluir representante legal
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li role="menuitem">
+                                    <a href="{% url 'new_legal_representative' applicant.cpf_cnpj %}">
+                                        Adicionar representante legal
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li role="menuitem">
+                                    <a href="{% url 'delete_applicant' applicant.cpf_cnpj %}">
+                                        Excluir requerente
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><b>Email:</b> {{ applicant.email }}</li>
+                            <li><b>CPF/CNPJ:</b> {{ applicant.cpf_cnpj }}</li>
+                            <li><b>Telefone:</b> {{ applicant.phone}}</li>
+                            <li><b>Celular:</b> {{ applicant.cellphone }}</li>
+                            <li><b>Endereço:</b> {{ applicant.address_name }}</li>
+                            <li><b>Número:</b> {{ applicant.address_number }}</li>
+                            {% if applicant.address_complement %}
+                            <li><b>Complemento:</b> {{ applicant.address_complement }}</li>
+                            {% else %}
+                            <li><b>Complemento:</b> Não consta</li>
+                            {% endif %}
+                            <li><b>Bairro:</b> {{ applicant.address_neighborhood }}</li>
+                            <li><b>Cidade:</b> {{ applicant.address_city }}</li>
+                            <li><b>Estado:</b> {{ applicant.address_state }}</li>
+                            <li><b>CEP:</b> {{ applicant.address_cep }}</li>
+                        </ul>
+                    </div>
+                    {% if legal_representative %}
+                    <div class="col-md-6">
+                        <h3>Representante Legal</h3>
+                        <ul>
+                            <li><b>Nome:</b> {{ legal_representative.name }}</li>
+                            <li><b>Email:</b> {{ legal_representative.email }}</li>
+                            <li><b>CPF:</b> {{ legal_representative.cpf }}</li>
+                            <li><b>Telefone:</b> {{ legal_representative.phone }}</li>
+                            <li><b>Celular:</b> {{ legal_representative.cellphone }}</li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+{% endblock %}

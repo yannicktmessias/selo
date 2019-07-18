@@ -6,10 +6,6 @@ jQuery(document).ready(function() {
         $('input:checkbox').not(this).prop('checked', this.checked);
     });
 
-    $("#nextPageSeloForm").click(function() {
-        window.location.href = "new_selo_2.html";
-    });
-
     $('input[name="daterange"]').daterangepicker({
         "locale": {
             "format": "DD/MM/YYYY",

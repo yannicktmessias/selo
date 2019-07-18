@@ -1,0 +1,54 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Editar Representante</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="name">Nome do representante legal</label>
+                            <input type="text" name="name" maxlength="60" class="form-control" id="name" placeholder="Nome do representante legal" value="{% if form.name.value != None %}{{form.name.value}}{% endif %}" autofocus required>
+                            {{ form.name.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cpf">CPF do representante legal</label>
+                            <input type="text" name="cpf" maxlength="15" class="form-control" id="cpf" placeholder="CPF do representante legal" value="{{ legal_representative.cpf }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="email">Email do representante legal</label>
+                            <input type="email" name="email" maxlength="254" class="form-control" id="email" placeholder="Email do representante legal" value="{% if form.email.value != None %}{{form.email.value}}{% endif %}" required>
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="phone">Telefone do representante legal</label>
+                            <input type="text" name="phone" maxlength="20" class="form-control" id="phone" placeholder="Telefone do representante legal" value="{% if form.phone.value != None %}{{form.phone.value}}{% endif %}" required>
+                            {{ form.phone.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cellphone">Celular do representante legal</label>
+                            <input type="text" name="cellphone" maxlength="20" class="form-control" id="cellphone" placeholder="Celular do representante legal" value="{% if form.cellphone.value != None %}{{form.cellphone.value}}{% endif %}" required>
+                            {{ form.cellphone.errors }}
+                        </div>
+                    </div>
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <button class="btn btn-primary btn-block" type="submit">
+                                Salvar
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <a class="btn btn-primary btn-block" href="{% url 'applicant_info' applicant.cpf_cnpj %}">
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+{% endblock %}

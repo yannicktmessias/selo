@@ -1,0 +1,52 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Todos os Requerentes</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+            	<div class="row mb-3">
+                    <div class="col-xs-12">
+                        {% if applicants %}
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome/Razão Social</th>
+                                    <th>CPF/CNPJ</th>
+                                    <th>Email</th>
+                                    <th>Telefone</th>
+                                    <th>Representante Legal</th>
+                                    <th class="col-sm-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for applicant in applicants %}
+                                <tr>
+                                    <td>{{ applicant.name }}</td>
+                                    <td>{{ applicant.cpf_cnpj }}</td>
+                                    <td>{{ applicant.email }}</td>
+                                    <td>{{ applicant.phone }}</td>
+                                    <td>
+                                        {% if applicant.legal_representative %}
+                                        {{ applicant.legal_representative }}
+                                        {% else %}
+                                        Não consta
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'applicant_info' applicant.cpf_cnpj %}">
+                                            Ver requerente
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h3>Nenhum resultado foi encontrado</h3>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+{% endblock %}

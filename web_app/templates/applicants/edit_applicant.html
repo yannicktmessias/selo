@@ -1,0 +1,93 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Editar Requerente</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="name">Nome/Razão Social do Requerente</label>
+                            <input type="text" name="name" maxlength="60" class="form-control" id="name" placeholder="Nome/Razão Social do Requerente" value="{% if form.name.value != None %}{{form.name.value}}{% endif %}" autofocus required>
+                            {{ form.name.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cpf_cnpj">CPF/CNPJ do requerente</label>
+                            <input type="text" name="cpf_cnpj" maxlength="20" class="form-control" id="cpf_cnpj" placeholder="CPF/CNPJ do requerente" value="{{ applicant.cpf_cnpj }}" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" maxlength="254" class="form-control" id="email" placeholder="Email" value="{% if form.email.value != None %}{{form.email.value}}{% endif %}" required>
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="phone">Telefone</label>
+                            <input type="text" name="phone" maxlength="20" class="form-control" id="phone" placeholder="Telefone" value="{% if form.phone.value != None %}{{form.phone.value}}{% endif %}" required>
+                            {{ form.phone.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cellphone">Celular</label>
+                            <input type="text" name="cellphone" maxlength="20" class="form-control" id="cellphone" placeholder="Celular" value="{% if form.cellphone.value != None %}{{form.cellphone.value}}{% endif %}" required>
+                            {{ form.cellphone.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="address_name">Endereço</label>
+                            <input type="text" name="address_name" maxlength="60" class="form-control" id="address_name" placeholder="Endereço" value="{% if form.address_name.value != None %}{{form.address_name.value}}{% endif %}" required>
+                            {{ form.address_name.errors }}
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="address_number">Número</label>
+                            <input type="text" name="address_number" maxlength="6" class="form-control" id="address_number" placeholder="Número" value="{% if form.address_number.value != None %}{{form.address_number.value}}{% endif %}" required>
+                            {{ form.address_number.errors }}
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label for="address_complement">Complemento</label>
+                            <input type="text" name="address_complement" maxlength="30" class="form-control" id="address_complement" placeholder="Complemento" value="{% if form.address_complement.value != None %}{{form.address_complement.value}}{% endif %}">
+                            {{ form.address_complement.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="address_neighborhood">Bairro</label>
+                            <input type="text" name="address_neighborhood" maxlength="30" class="form-control" id="address_neighborhood" placeholder="Bairro" value="{% if form.address_neighborhood.value != None %}{{form.address_neighborhood.value}}{% endif %}" required>
+                            {{ form.address_neighborhood.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="address_city">Cidade</label>
+                            <input type="text" name="address_city" maxlength="30" class="form-control" id="address_city" placeholder="Cidade" value="{% if form.address_city.value != None %}{{form.address_city.value}}{% endif %}" required>
+                            {{ form.address_city.errors }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="address_state">Estado</label>
+                            <input type="text" name="address_state" maxlength="30" class="form-control" id="address_state" placeholder="Estado" value="{% if form.address_state.value != None %}{{form.address_state.value}}{% endif %}" required>
+                            {{ form.address_state.errors }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="address_cep">CEP</label>
+                            <input type="text" name="address_cep" maxlength="15" class="form-control" id="address_cep" placeholder="CEP" value="{% if form.address_cep.value != None %}{{form.address_cep.value}}{% endif %}" required>
+                            {{ form.address_cep.errors }}
+                        </div>
+                    </div>
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <button class="btn btn-primary btn-block" type="submit">
+                                Salvar
+                            </button>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <a class="btn btn-primary btn-block" href="{% url 'applicant_info' applicant.cpf_cnpj %}">
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+{% endblock %}

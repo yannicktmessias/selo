@@ -1,8 +1,9 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, BooleanField
 
 from .models import Applicant, LegalRepresentative
 
-ApplicantCreationForm(ModelForm):
+class ApplicantCreationForm(ModelForm):
+	has_representative = BooleanField(required=False)
 	
 	class Meta:
 		model = Applicant
@@ -12,16 +13,17 @@ ApplicantCreationForm(ModelForm):
 			'email',
 			'phone',
 			'cellphone',
-			'adress_name',
-			'adress_number',
-			'adress_complement',
-			'adress_neighborhood',
-			'adress_city',
-			'adress_state',
-			'adress_cep',
+			'address_name',
+			'address_number',
+			'address_complement',
+			'address_neighborhood',
+			'address_city',
+			'address_state',
+			'address_cep',
+			'has_representative'
 		)
 
-ApplicantChangeForm(ModelForm):
+class ApplicantChangeForm(ModelForm):
 	
 	class Meta:
 		model = Applicant
@@ -30,16 +32,16 @@ ApplicantChangeForm(ModelForm):
 			'email',
 			'phone',
 			'cellphone',
-			'adress_name',
-			'adress_number',
-			'adress_complement',
-			'adress_neighborhood',
-			'adress_city',
-			'adress_state',
-			'adress_cep',
+			'address_name',
+			'address_number',
+			'address_complement',
+			'address_neighborhood',
+			'address_city',
+			'address_state',
+			'address_cep',
 		)
 
-LegalRepresentativeCreationForm(ModelForm):
+class LegalRepresentativeCreationForm(ModelForm):
 	
 	class Meta:
 		model = LegalRepresentative
@@ -49,10 +51,9 @@ LegalRepresentativeCreationForm(ModelForm):
 			'email',
 			'phone',
 			'cellphone',
-			'applicant_represented',
 		)
 
-LegalRepresentativeChangeForm(ModelForm):
+class LegalRepresentativeChangeForm(ModelForm):
 	
 	class Meta:
 		model = LegalRepresentative

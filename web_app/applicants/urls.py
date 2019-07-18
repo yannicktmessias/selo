@@ -5,6 +5,10 @@ from . import views
 urlpatterns = [
     path('<int:cpf_cnpj>/', views.applicant_info, name='applicant_info'),
     path('<int:cpf_cnpj>/editar/', views.edit_applicant, name='edit_applicant'),
+    path('<int:cpf_cnpj>/editar_representante_legal', views.edit_legal_representative, name='edit_legal_representative'),
+    path('<int:cpf_cnpj>/excluir_representante_legal', views.delete_legal_representative, name='delete_legal_representative'),
+    path('<int:cpf_cnpj>/confirmar_excluir_representante_legal', views.delete_legal_representative_confirmation, name='delete_legal_representative_confirmation'),
+    path('<int:cpf_cnpj>/novo_representante_legal', views.new_legal_representative, name='new_legal_representative'),
     path('<int:cpf_cnpj>/excluir/', views.delete_applicant, name='delete_applicant'),
     path('<int:cpf_cnpj>/confirmar_excluir/', views.delete_applicant_confirmation, name='delete_applicant_confirmation'),
     path('novo/', views.new_applicant, name='new_applicant'),

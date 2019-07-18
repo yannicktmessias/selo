@@ -33,38 +33,38 @@ class Applicant(models.Model):
         _('cellphone'),
         max_length = 20,
     )
-    adress_name = models.CharField(
-        _('adress name'),
+    address_name = models.CharField(
+        _('address name'),
         max_length = 60,
         help_text = _('Required.'),
     )
-    adress_number = models.CharField(
-        _('adress number'),
+    address_number = models.CharField(
+        _('address number'),
         max_length = 6,
         help_text = _('Required.'),
         validators = [NumericValidator()],
     )
-    adress_complement = models.CharField(
-        _('adress complement'),
+    address_complement = models.CharField(
+        _('address complement'),
         max_length = 30,
-        help_text = _('Required.'),
+        blank = True,
     )
-    adress_neighborhood = models.CharField(
+    address_neighborhood = models.CharField(
         _('neighborhood'),
         max_length = 30,
         help_text = _('Required.'),
     )
-    adress_city = models.CharField(
+    address_city = models.CharField(
         _('city'),
         max_length = 30,
         help_text = _('Required.'),
     )
-    adress_state = models.CharField(
+    address_state = models.CharField(
         _('state'),
         max_length = 30,
         help_text = _('Required.'),
     )
-    adress_cep = models.CharField(
+    address_cep = models.CharField(
         _('CEP'),
         max_length = 15,
         help_text = _('Required.'),
@@ -105,7 +105,7 @@ class LegalRepresentative(models.Model):
     applicant_represented = models.OneToOneField(
         Applicant,
         on_delete = models.CASCADE,
-        related_name = _('applicant_represented_by'),
+        related_name = 'legal_representative',
     )
 
     def __str__(self):
