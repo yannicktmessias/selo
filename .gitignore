@@ -4,4 +4,8 @@ __pycache__
 env
 /static
 .DS_Store
-deploy_config.py
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
