@@ -1,0 +1,107 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Novo Selo</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="applicant_name">Nome do Requerente</label>
+                            <input type="text" name="name" maxlength="60" class="form-control" id="applicant_name" placeholder="Nome/Razão Social do Requerente" value="{{applicant.name}}" disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="applicant_cpf_cnpj">CPF/CNPJ do requerente</label>
+                            <input type="text" name="cpf_cnpj" maxlength="20" class="form-control" id="applicant_cpf_cnpj" placeholder="CPF/CNPJ do requerente" value="{{applicant.cpf_cnpj}}" disabled>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="sei_process_number">Número do processo SEI</label>
+                            <input type="text" name="sei_number" maxlength="20" class="form-control" id="sei_process_number" placeholder="Número do processo SEI" value="{% if form.sei_number.value != None %}{{form.sei_number.value}}{% endif %}" autofocus required>
+                            {{ form.sei_number.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="sei_process_protocol">Protocolo</label>
+                            <input type="text" name="sei_protocol" maxlength="20" class="form-control" id="sei_process_protocol" placeholder="Protocolo" value="{% if form.sei_protocol.value != None %}{{form.sei_protocol.value}}{% endif %}" required>
+                            {{ form.sei_protocol.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="code">Código do selo</label>
+                            <input type="text" name="code" maxlength="20" class="form-control" id="code" placeholder="Código do selo" value="{% if form.code.value != None %}{{form.code.value}}{% endif %}" required>
+                            {{ form.code.errors }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="domain">Domínio</label>
+                            <input type="text" name="domain" maxlength="100" class="form-control" id="domain" placeholder="Domínio" value="{% if form.domain.value != None %}{{form.domain.value}}{% endif %}" required>
+                            {{ form.domain.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="request_date">Data do requerimento</label>
+                            <input type="text" name="request_date" maxlength="10" class="form-control" id="request_date" aria-describedby="date-help" placeholder="DD/MM/AAAA" value="{% if form.request_date.value != None %}{{form.request_date.value}}{% endif %}">
+                            <span id="date-help" class="sr-only">DD/MM/AAAA</span>
+                            {{ form.request_date.errors }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="refusal_date">Data do indeferimento</label>
+                            <input type="text" name="refusal_date" maxlength="10" class="form-control" id="refusal_date" aria-describedby="date-help" placeholder="DD/MM/AAAA" value="{% if form.refusal_date.value != None %}{{form.refusal_date.value}}{% endif %}">
+                            <span id="date-help" class="sr-only">DD/MM/AAAA</span>
+                            {{ form.refusal_date.errors }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="grant_date">Data de concessão</label>
+                            <input type="text" name="grant_date" maxlength="10" class="form-control" id="grant_date" aria-describedby="date-help" placeholder="DD/MM/AAAA" value="{% if form.grant_date.value != None %}{{form.grant_date.value}}{% endif %}">
+                            <span id="date-help" class="sr-only">DD/MM/AAAA</span>
+                            {{ form.grant_date.errors }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="renewal_date">Data de renovação</label>
+                            <input type="text" name="renewal_date" maxlength="10" class="form-control" id="renewal_date" aria-describedby="date-help" placeholder="DD/MM/AAAA" value="{% if form.renewal_date.value != None %}{{form.renewal_date.value}}{% endif %}">
+                            <span id="date-help" class="sr-only">DD/MM/AAAA</span>
+                            {{ form.renewal_date.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="sei_process_nature">Natureza</label> <br/>
+                            <select name="sei_nature" id="sei_process_nature">
+                                <option value="PB" {% if form.sei_nature.value == 'PB' %}selected{% endif %}>pública</option>
+
+                                <option value="PV" {% if form.sei_nature.value == 'PV' %}selected{% endif %}>privada</option>
+
+                            </select>
+                            {{ form.sei_nature.errors }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="linksList" class="form-group col-md-6">
+                            <label for="link">Links</label>
+                            {% for link_form in link_forms %}
+                            <input type="text" name="link_{{forloop.counter}}" maxlength="100" class="form-control mt-1" id="link" placeholder="URL do link" value="{% if link_form.url.value != None %}{{link_form.url.value}}{% endif %}" />
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <button id="addMoreLinkButton" class="btn btn-success btn-block">
+                                <i class="fa fa-plus"></i>
+                                <span >Adicionar mais um link</span>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <button class="btn btn-primary btn-block" type="submit">
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+{% endblock %}

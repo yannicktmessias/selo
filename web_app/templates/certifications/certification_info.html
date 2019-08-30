@@ -1,0 +1,195 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Informações do Selo</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <div class="row flex items-center">
+                    <div class="col-xs-12 col-md-10">
+                        <h2>Domínio: {{ certification.domain }}</h2>
+                    </div>
+                    <div class="col-xs-12 col-md-1 float-right">
+                        <div class="btn-group" dropdown>
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                                <span class="caret"></span>
+                                <span class="sr-only">Ações para o domínio institutoolgakos.org.br/</span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li role="menuitem">
+                                    <a href="#">
+                                        Enviar alerta de nível de aderência
+                                    </a>
+                                </li>
+                                {% if certification.is_active %}
+                                <li role="menuitem">
+                                    <a href="{% url 'inactivate_certification' certification.sei_number %}">
+                                        Inativar selo
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li role="menuitem">
+                                    <a href="{% url 'activate_certification' certification.sei_number %}">
+                                        Ativar selo
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li role="menuitem">
+                                    <a href="{% url 'edit_certification' certification.sei_number %}">
+                                        Editar selo
+                                    </a>
+                                </li>
+                                <li role="menuitem">
+                                    <a href="{% url 'delete_certification' certification.sei_number %}">
+                                        Excluir selo
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 info-box">
+                        <div class="col-xs-12">
+                            <h4>Informações</h4>
+                            <div class="mb-1">
+                                <a href="#" id="show_hide_info">(mostrar/esconder)</a>
+                            </div>
+                            <div id="certificationInfo">
+                                <ul>
+                                    <li>
+                                        <b>Nome do requerente: </b> 
+                                        {{ applicant.name }} 
+                                        <a href="{% url 'applicant_info' applicant.cpf_cnpj %}">
+                                            (ver mais sobre o requerente)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <b>Representante legal:</b> 
+                                        {% if legal_representative %} 
+                                        {{ legal_representative.name }} 
+                                        {% else %} 
+                                        Não consta 
+                                        {% endif %}
+                                    </li>
+                                    <li>
+                                        <h5>Processo SEI</h5>
+                                    </li>
+                                    <ul>
+                                        <li>
+                                            <b>Número:</b>
+                                            {{ certification.sei_number }}
+                                        </li>
+                                        <li>
+                                            <b>Protocolo:</b>
+                                            {{ certification.sei_protocol }}
+                                        </li>
+                                        <li>
+                                            <b>Natureza:</b>
+                                            {% if certification.sei_nature == 'PB' %}
+                                            Pública
+                                            {% elif certification.sei_nature == 'PV' %}
+                                            Privada
+                                            {% else %}
+                                            Não consta
+                                            {% endif %}
+                                        </li>
+                                        <li>
+                                            <b>Data de requerimento:</b> 
+                                            {{ certification.request_date|date:"d/m/Y" }}
+                                        </li>
+                                        <li>
+                                            <b>Data de indeferimento:</b> 
+                                            {{ certification.refusal_date|date:"d/m/Y" }}
+                                        </li>
+                                    </ul>
+                                    <li>
+                                        <h5>Certificado</h5>
+                                    </li>
+                                    <ul>
+                                        <li>
+                                            <b>Código:</b>
+                                            {{ certification.code }}
+                                        </li>
+                                        <li>
+                                            <b>Data de concessão:</b> {{ certification.grant_date|date:"d/m/Y" }}
+                                        </li>
+                                        <li>
+                                            <b>Data de renovação:</b> {{ certification.renewal_date|date:"d/m/Y" }}
+                                        </li>
+                                        <li>
+                                            <b>Status:</b> 
+                                            {% if certification.is_active %}
+                                            Ativo
+                                            {% else %}
+                                            Inativo
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-center mb-1">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-4 float-left justify-center">
+                                <div class="links-result-wrapper">
+                                    <h4>Acima de 95%</h4>
+                                    <div class="links-result-box green">
+                                        20
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-4 float-right justify-center">
+                                <div class="links-result-wrapper">
+                                    <h4>Abaixo de 95%</h4>
+                                    <div class="links-result-box red">
+                                        0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row last-run-box">
+                    <b>Data da última avaliação:</b> 24 de Abril de 2019 às 19:33
+                </div>
+                <div class="row selos-option">
+                    <label for="days">Dias visíveis:</label>
+                    <select id="days" name="select">
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead class="thead-links">
+                            <tr>
+                                <th style="width: 25%;">URL</th>
+                                <th>24/05/2019</th>
+                                <th>23/05/2019</th>
+                                <th>23/05/2019</th>
+                                <th>23/05/2019</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody-links">
+                            {% for page in pages %}
+                            <tr>
+                                <td>{{ page.url }}</td>
+                                <td>99%</td>
+                                <td>99%</td>
+                                <td>99%</td>
+                                <td>99%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+{% endblock %}

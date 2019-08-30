@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Novo Selo</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row flex justify-center">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="applicant_cpf_cnpj">Digite o CPF/CNPJ do requerente</label>
+                                <input type="text" name="cpf_cnpj" maxlength="20" class="form-control" id="applicant_cpf_cnpj" placeholder="CPF/CNPJ do requerente" aria-describedby="cpfError" value="{% if form.cpf_cnpj.value != None %}{{form.cpf_cnpj.value}}{% endif %}" required>
+                                {% if not_found %}
+                                <small id="cpfError" class="form-text text-danger">
+                                    CPF/CNPJ não encontrado. 
+                                    <a href="{% url 'new_applicant' %}">Clique aqui</a> para criar um
+                                    requerente novo.
+                                </small>
+                                {% endif %}
+
+                                <button type="submit" class="btn btn-primary btn-block continue-btn">
+                                    Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+{% endblock %}

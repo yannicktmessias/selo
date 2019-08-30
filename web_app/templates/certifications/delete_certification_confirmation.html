@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+
+{% block navbar_title %}
+                                <h1 class="nav-title">Excluir Selo</h1>
+{% endblock %}
+
+{% block content %}
+            <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <h3>Tem certeza que deseja excluir o selo?</h3>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-12">
+                        <p><b>Domínio:</b> {{ certification.domain }}</p>
+                        <p><b>Código:</b> {{ certification.code }}</p>
+                        <p><b>Número do Processo Sei:</b> {{ certification.sei_number }}</p>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col-md-12">
+                        <h4>Do requerente:</h4>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <p><b>Nome/Razão Social:</b> {{ applicant.name }}</p>
+                        <p><b>CPF/CNPJ:</b> {{ applicant.cpf_cnpj }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <form method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-primary btn-block" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a class="btn btn-primary btn-block" href="{% url 'certification_info' certification.sei_number %}">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
+            </div>
+{% endblock %}

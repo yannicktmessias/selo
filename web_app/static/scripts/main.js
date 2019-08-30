@@ -1,6 +1,5 @@
 jQuery(document).ready(function() {
     var max_links = 20
-    var links = 1
 
     $("#selectAll").click(function() {
         $('input:checkbox').not(this).prop('checked', this.checked);
@@ -75,10 +74,18 @@ jQuery(document).ready(function() {
     $("#addMoreLinkButton").click(function(e) {
         e.preventDefault();
         var linksList = $("#linksList");
+        var num_links = linksList.children('input').length;
 
-        if (links < max_links) {
-            links++;
-            $(linksList).append('<input type="text" class="form-control mt-1" id="link" placeholder="URL do link" />');
+        if (num_links < max_links) {
+            $(linksList).append(
+                '<input type="text" name="link_'+(num_links+1)+'" maxlength="100" class="form-control mt-1" id="link" placeholder="URL do link" />'
+            );
         }
+    });
+
+    $("#certificationInfo").hide()
+
+    $("#show_hide_info").click(function(){
+        $("#certificationInfo").toggle();
     });
 });

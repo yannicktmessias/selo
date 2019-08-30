@@ -92,7 +92,7 @@
                             </button>
                             <a class="navbar-brand" href="#">
                                 {% block navbar_title %}
-                                <h1 class="nav-title">Lista de Selos Concedidos</h1>
+
                                 {% endblock %}
                             </a>
                         </div>
@@ -100,26 +100,29 @@
                             <div class="nav navbar-nav">
                                 <ul>
                                     <li>
-                                        <a href="home.html">SELOS</a>
+                                        <a href="{% url 'list_certifications' %}">SELOS</a>
                                         <ul>
-                                            <li><a href="home.html">Lista de Selos Concedidos</a></li>
-                                            <li><a href="new_selo.html">Adicionar Novo Selo</a></li>
-                                            <li><a href="search_selo.html">Pesquisar Selo</a></li>
-                                            <li><a href="{% url 'new_applicant' %}">Adicionar Requerente</a></li>
-                                            <li><a href="{% url 'search_applicant' %}">Pesquisar Requerente</a></li>
-                                            <li><a href="robot.html">Parâmetros do Robô</a></li>
+                                            <li><a href="{% url 'search_certification' %}">Pesquisar Selo</a></li>
+                                            <li><a href="{% url 'new_certification_applicant' %}">Adicionar Selo</a></li>                                            
+                                            <li><a href="">Parâmetros do Robô</a></li>
                                         </ul>
                                     </li>
+                                    <li>
+                                        <a href="{% url 'list_applicants' %}">REQUERENTES</a>
+                                        <ul>
+                                            <li><a href="{% url 'search_applicant' %}">Pesquisar Requerente</a></li>
+                                            <li><a href="{% url 'new_applicant' %}">Adicionar Requerente</a></li>
+                                        </ul>
                                     <li>
                                         <a href="{% url 'list_users' %}">GESTORES</a>
                                         <ul>
+                                            <li><a href="{% url 'search_user' %}">Pesquisar Gestor</a></li>
+                                            <li><a href="{% url 'new_user' %}">Adicionar Gestor</a></li>
                                             <li><a href="{% url 'user_info' user.rf%}">Minha conta</a></li>
-                                            <li><a href="{% url 'search_user' %}">Procurar Gestor</a></li>
-                                            <li><a href="{% url 'new_user' %}">Novo Gestor</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="activity_log.html">ATIVIDADES DO SISTEMA</a>
+                                        <a href="">ATIVIDADES DO SISTEMA</a>
                                     </li>
                                 </ul>
                                 &nbsp;

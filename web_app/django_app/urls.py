@@ -18,10 +18,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from certifications.views import index
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestor/', include('accounts.urls')),
     path('requerente/', include('applicants.urls')),
     path('selo/', include('certifications.urls')),
-    path('', include('certifications.urls')),
+    path('', index),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
