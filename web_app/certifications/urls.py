@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     path('<int:sei_number>/', views.certification_info, name='certification_info'),
+    path('<int:sei_number>/<int:number_of_days>/', views.certification_info, name='certification_info_n'),
+    path('<int:sei_number>/relatorio/<int:page_id>/<path:date_time>/', views.report_show, name='report_show'),
     path('<int:sei_number>/editar/', views.edit_certification, name='edit_certification'),
     path('<int:sei_number>/excluir/', views.delete_certification, name='delete_certification'),
     path('<int:sei_number>/confirmar_excluir/', views.delete_certification_confirmation, name='delete_certification_confirmation'),

@@ -80,7 +80,7 @@
                         <div id="linksList" class="form-group col-md-6">
                             <label for="link">Links</label>
                             {% for link_form in link_forms %}
-                            <input type="text" name="link_{{forloop.counter}}" maxlength="100" class="form-control mt-1" id="link" placeholder="URL do link" value="{% if link_form.url.value != None %}{{link_form.url.value}}{% endif %}" />
+                            <input type="text" name="link_{{forloop.counter}}" maxlength="200" class="form-control mt-1" id="link" placeholder="URL do link" value="{% if link_form.url.value != None %}{{link_form.url.value}}{% endif %}" />
                             {% endfor %}
                         </div>
                     </div>

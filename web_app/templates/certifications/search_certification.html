@@ -52,19 +52,23 @@
                             </thead>
                             <tbody class="tbody-selos">
                                 {% for certification in certifications %}
-                                <tr class="{% if certification.below_links_count %} need-attention {% endif %}">
+                                <tr class="{% if below_links_count|get_item:certification %} need-attention {% endif %}">
                                     <td>{{ certification.domain }}</td>
                                     <td>{{ certification.applicant.name }}</td>
                                     <td>{{ certification.grant_date|date:"d/m/Y" }}</td>
                                     <td>
-                                        {% if certification.below_links_count  %}
+                                        {% if below_links_count|get_item:certification  %}
                                         <i aria-hidden="true" class="fas fa-exclamation-circle" title="Precisa de atenção"></i>
                                         <span class="sr-only">Precisa de atenção</span>
                                         {% endif %}
-                                        {{ certification.below_links_count }}
+                                        {{ below_links_count|get_item:certification }}
                                     </td>
-                                    <td>{{ certification.above_links_count }}</td>
-                                    <td>{{ certification.last_evaluation }}</td>
+                                    <td>{{ above_links_count|get_item:certification }}</td>
+                                    {% if last_evaluation|get_item:certification %}
+                                    <td>{{ last_evaluation|get_item:certification|date:'d/m/Y H:i' }}</td>
+                                    {% else %}
+                                    <td>Nunca</td>
+                                    {% endif %}
                                     <td>
                                         <a class="domain-detail-link" href="{% url 'certification_info' certification.sei_number %}" aria-label="Visualizar detalhes do domínio {{ certification.domain }}">
                                             <i aria-hidden="true" class="fas fa-file-alt"></i>

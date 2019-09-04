@@ -1,5 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.conf import settings
+from datetime import datetime, date, timedelta
+from pytz import timezone
+import os
+import shutil
 
 from .forms import (
     CertificationApplicantForm,
@@ -7,24 +13,104 @@ from .forms import (
     CertificationChangeForm,
     PageCreationForm,
 )
-from .models import Certification, Page
+from .models import Certification, Page, EvaluationReport
 from applicants.models import Applicant, LegalRepresentative
 
+project_root_path = os.path.dirname(settings.BASE_DIR)
+reports_path = os.path.join(project_root_path, 'reports')
+
+def get_past_days(number_of_days):
+    dates = []
+    today = datetime.now(timezone(settings.TIME_ZONE)).date()
+    for i in range(number_of_days):
+        date = today - timedelta(days = i)
+        dates.append(date)
+
+    return dates
+
+def get_past_reports(pages, dates):
+    reports = {}
+    for page in pages:
+        page_reports = EvaluationReport.objects.filter(page=page)
+        reports[page] = []
+        for date in dates:
+            date_page_report = page_reports.filter(
+                creation_date_time__year=date.year,
+                creation_date_time__month=date.month,
+                creation_date_time__day=date.day,
+            )
+            if date_page_report:
+                date_page_report = date_page_report[0]
+            else:
+                date_page_report = EvaluationReport(
+                    page=page, 
+                    grade=0,
+                    creation_date_time=date,
+                    page_found=False,
+                )
+            reports[page].append(date_page_report)
+
+    return reports
+
+def get_above_links_count(pages, reports, dates, last_evaluation):
+    if last_evaluation == '':
+        return len(pages)
+    above_links_count = 0
+    for i, date in enumerate(dates):
+        if date.day == last_evaluation.day:
+            break
+    for page in pages:
+        if reports[page][i].succeed():
+            above_links_count += 1
+    return above_links_count
+
 @login_required(login_url='login')
-def certification_info(request, sei_number):
+def certification_info(request, sei_number, number_of_days = 4):
     certification = Certification.objects.get(sei_number=sei_number)
     applicant = certification.applicant
     legal_representative = LegalRepresentative.objects.filter(applicant_represented=applicant)
     pages = Page.objects.filter(certification=certification)
     if legal_representative:
         legal_representative = legal_representative[0]
+    dates = get_past_days(number_of_days)
+    reports = get_past_reports(pages, dates)
+    certification_reports = EvaluationReport.objects.filter(page__certification=certification)
+    if len(certification_reports) > 0:
+        last_evaluation = certification_reports.latest('creation_date_time').creation_date_time
+    else:
+        last_evaluation = ''
+    above_links_count = get_above_links_count(pages, reports, dates, last_evaluation)
+    below_links_count = len(pages) - above_links_count
     args = {
         'certification': certification,
         'applicant': applicant,
         'legal_representative': legal_representative,
-        'pages': pages
+        'pages': pages,
+        'dates': dates,
+        'reports': reports,
+
+        'last_evaluation': last_evaluation,
+        'above_links_count': above_links_count,
+        'below_links_count': below_links_count,
     }
     return render(request, 'certifications/certification_info.html', args)
+
+@login_required(login_url='login')
+def report_show(request, sei_number, page_id, date_time):
+    certification = Certification.objects.get(sei_number=sei_number)
+    applicant = certification.applicant
+    page = Page.objects.get(id=page_id)
+    cleaned_url = page.url.replace('/', ",-'")
+
+    applicant_path = os.path.join(reports_path, applicant.cpf_cnpj)
+    certification_path = os.path.join(applicant_path, certification.sei_number)
+    url_path = os.path.join(certification_path, cleaned_url)
+    pdf_path = os.path.join(url_path, date_time + '.pdf')
+
+    with open(pdf_path, 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'filename='+date_time.replace(':', '-')
+        return response
 
 def create_link_forms_from_database(certification):
     links = Page.objects.filter(certification=certification)
@@ -59,9 +145,20 @@ def update_certification_links(certification, link_forms):
     for page in pages:
         page_is_not_in_link_forms = True
         for link_form in link_forms:
-            if link_form.data['url'] == page.url:
+            if link_form.data['url'].strip() == page.url:
                 page_is_not_in_link_forms = False
+                break
         if page_is_not_in_link_forms:
+            applicant = certification.applicant
+            cleaned_url = page.url.replace('/', ",-'")
+
+            applicant_path = os.path.join(reports_path, applicant.cpf_cnpj)
+            certification_path = os.path.join(applicant_path, certification.sei_number)
+            url_path = os.path.join(certification_path, cleaned_url)
+
+            if cleaned_url in os.listdir(certification_path):
+                shutil.rmtree(url_path)
+
             page.delete()
 
 @login_required(login_url='login')
@@ -179,8 +276,30 @@ def new_certification(request, cpf_cnpj):
 
 @login_required(login_url='login')
 def list_certifications(request):
-    certifications = Certification.objects.all()
-    return render(request, 'certifications/list_certifications.html', {'certifications': certifications})
+    certifications = Certification.objects.filter(is_active=True)
+    last_evaluation = {}
+    above_links_count = {}
+    below_links_count = {}
+
+    for certification in certifications:
+        pages = Page.objects.filter(certification=certification)
+        dates = get_past_days(7)
+        reports = get_past_reports(pages, dates)
+        certification_reports = EvaluationReport.objects.filter(page__certification=certification)
+        if len(certification_reports) > 0:
+            last_evaluation[certification] = certification_reports.latest('creation_date_time').creation_date_time
+        else:
+            last_evaluation[certification] = ''
+        above_links_count[certification] = get_above_links_count(pages, reports, dates, last_evaluation[certification])
+        below_links_count[certification] = len(pages) - above_links_count[certification]
+
+    args = {
+        'certifications': certifications,
+        'last_evaluation': last_evaluation,
+        'above_links_count': above_links_count,
+        'below_links_count': below_links_count,
+    }
+    return render(request, 'certifications/list_certifications.html', args)
 
 @login_required(login_url='login')
 def search_certification(request):
@@ -195,44 +314,33 @@ def search_certification(request):
     else:
         certifications = Certification.objects.all()
         where = 'indefinido'
-    args = {'search_term': search_term, 'where': where, 'certifications': certifications}
+
+    last_evaluation = {}
+    above_links_count = {}
+    below_links_count = {}
+
+    for certification in certifications:
+        pages = Page.objects.filter(certification=certification)
+        dates = get_past_days(7)
+        reports = get_past_reports(pages, dates)
+        certification_reports = EvaluationReport.objects.filter(page__certification=certification)
+        if len(certification_reports) > 0:
+            last_evaluation[certification] = certification_reports.latest('creation_date_time').creation_date_time
+        else:
+            last_evaluation[certification] = ''
+        above_links_count[certification] = get_above_links_count(pages, reports, dates, last_evaluation[certification])
+        below_links_count[certification] = len(pages) - above_links_count[certification]
+
+    args = {
+        'search_term': search_term, 
+        'where': where, 
+        'certifications': certifications,
+        'last_evaluation': last_evaluation,
+        'above_links_count': above_links_count,
+        'below_links_count': below_links_count,
+    }
     return render(request, 'certifications/search_certification.html', args)
 
 @login_required(login_url='login')
 def index(request):
-    cert_1 = {
-        'id': 1,
-        'domain': 'prefeitura.sp.gov.br/',
-        'applicant': 'Prefeitura do Cidade de São Paulo',
-        'grant_date': '12/02/2019',
-        'below_links_count': 0,
-        'above_links_count': 13,
-        'last_evaluation': '19:42 21/04/2019',
-        'link': '',
-    }
-    cert_2 = {
-        'id': 2,
-        'domain': 'camarasuzano.sp.gov.br/',
-        'applicant': 'Câmara Municipal de Suzano',
-        'grant_date': '12/02/2019',
-        'below_links_count': 1,
-        'above_links_count': 19,
-        'last_evaluation': '19:42 21/04/2019',
-        'link': '',
-    }
-    cert_3 = {
-        'id': 3,
-        'domain': 'samsung.com.br/',
-        'applicant': 'Samsung',
-        'grant_date': '12/02/2019',
-        'below_links_count': 0,
-        'above_links_count': 2,
-        'last_evaluation': '19:42 21/04/2019',
-        'link': '',
-    }
-
-    args = {
-        'certifications': [cert_1, cert_2, cert_3]
-    }
-
-    return render(request, 'home.html', args)
+    return redirect('list_certifications')

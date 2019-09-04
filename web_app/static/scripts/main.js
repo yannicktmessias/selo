@@ -78,7 +78,7 @@ jQuery(document).ready(function() {
 
         if (num_links < max_links) {
             $(linksList).append(
-                '<input type="text" name="link_'+(num_links+1)+'" maxlength="100" class="form-control mt-1" id="link" placeholder="URL do link" />'
+                '<input type="text" name="link_'+(num_links+1)+'" maxlength="200" class="form-control mt-1" id="link" placeholder="URL do link" />'
             );
         }
     });

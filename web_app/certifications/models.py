@@ -4,6 +4,8 @@ from applicants.models import Applicant
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from datetime import datetime
+
 from accounts.validators import NumericValidator
 
 class Certification(models.Model):
@@ -72,6 +74,9 @@ class Certification(models.Model):
         ),
     )
 
+    def __str__(self):
+        return self.sei_number
+
 class Page(models.Model):
     certification = models.ForeignKey(
         Certification, 
@@ -79,9 +84,8 @@ class Page(models.Model):
     )
     url = models.CharField(
         _('URL'),
-        max_length = 100,
+        max_length = 200,
         unique = True,
-        primary_key=True,
         help_text = _('Required.'),
         error_messages={
             'unique': _("A page with that URL already exists."),
@@ -99,3 +103,29 @@ class Page(models.Model):
             'Unselect this instead of deleting pages.'
         ),
     )
+
+    def __str__(self):
+        return self.url
+
+class EvaluationReport(models.Model):
+    page = models.ForeignKey(
+        Page, 
+        on_delete=models.CASCADE,
+    )
+    page_found = models.BooleanField(
+        _('page found'),
+        default=True,
+    )
+    grade = models.IntegerField(
+        _('evaluation grade'),
+    )
+    creation_date_time = models.DateTimeField(
+        _('creation date/time'),
+        default=datetime.now(),
+    )
+
+    def succeed(self):
+        return self.grade >= 95
+
+    def __str__(self):
+        return str(self.creation_date_time)

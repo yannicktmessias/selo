@@ -1,5 +1,7 @@
 {% extends '_base.html' %}
 
+{% load custom_tags %}
+
 {% block navbar_title %}
                                 <h1 class="nav-title">Informações do Selo</h1>
 {% endblock %}
@@ -140,7 +142,7 @@
                                 <div class="links-result-wrapper">
                                     <h4>Acima de 95%</h4>
                                     <div class="links-result-box green">
-                                        20
+                                        {{ above_links_count }}
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +150,7 @@
                                 <div class="links-result-wrapper">
                                     <h4>Abaixo de 95%</h4>
                                     <div class="links-result-box red">
-                                        0
+                                        {{ below_links_count }}
                                     </div>
                                 </div>
                             </div>
@@ -156,36 +158,82 @@
                     </div>
                 </div>
                 <div class="row last-run-box">
-                    <b>Data da última avaliação:</b> 24 de Abril de 2019 às 19:33
+                    <b>Data da última avaliação:</b> 
+                    {% if last_evaluation %}
+                    {{ last_evaluation }}
+                    {% else %}
+                    Nunca
+                    {% endif %}
                 </div>
                 <div class="row selos-option">
-                    <label for="days">Dias visíveis:</label>
-                    <select id="days" name="select">
+                    <label for="number_of_days">Dias visíveis:</label>
+                    <a href="{% url 'certification_info_n' certification.sei_number 4 %}">
+                        4
+                    </a>
+                    <a href="{% url 'certification_info_n' certification.sei_number 5 %}">
+                        5
+                    </a>
+                    <a href="{% url 'certification_info_n' certification.sei_number 6 %}">
+                        6
+                    </a>
+                    <a href="{% url 'certification_info_n' certification.sei_number 7 %}">
+                        7
+                    </a>
+                    <!--
+                    <select id="number_of_days" name="select">
                         <option value="4">4</option>
                         <option value="5">5</option>
                         <option value="6">6</option>
                         <option value="7">7</option>
                     </select>
+                    -->
                 </div>
                 <div class="row">
                     <table class="table">
                         <thead class="thead-links">
                             <tr>
                                 <th style="width: 25%;">URL</th>
-                                <th>24/05/2019</th>
-                                <th>23/05/2019</th>
-                                <th>23/05/2019</th>
-                                <th>23/05/2019</th>
+                                {% for date in dates %}
+                                <th>{{ date|date:"d/m/Y" }}</th>
+                                {% endfor %}
                             </tr>
                         </thead>
                         <tbody class="tbody-links">
                             {% for page in pages %}
+                            {% if reports|page_found:page or not last_evaluation %}
                             <tr>
-                                <td>{{ page.url }}</td>
-                                <td>99%</td>
-                                <td>99%</td>
-                                <td>99%</td>
-                                <td>99%</td>
+                                <td>
+                                    {{ page.url }}
+                                </td>                            
+                            {% else %}
+                            <tr class="problem-url">
+                                <td>
+                                    {{ page.url }} 
+                                    <i aria-hidden="true" class="fas fa-times-circle" title="URL com problemas de acesso"></i>
+                                    <span class="sr-only">URL com problemas de acesso</span>
+                                </td>
+                            {% endif %}
+                                {% for report in reports|get_item:page %}
+                                {% if report.succeed %}
+                                <td>
+                                    <a href="{% url 'report_show' certification.sei_number page.id report.creation_date_time|date:'Y-m-d_H:i:s' %}">
+                                        {{ report.grade }}%
+                                    </a>
+                                </td>
+                                {% elif report.page_found %}
+                                <td class="need-attention">
+                                    <a style="color:#fff" href="{% url 'report_show' certification.sei_number page.id report.creation_date_time|date:'Y-m-d_H:i:s' %}">
+                                        {{ report.grade }}%
+                                    </a> 
+                                    <i aria-hidden="true" class="fas fa-exclamation-circle" title="Avaliação abaixo de 95%"></i>
+                                    <span class="sr-only">Avaliação abaixo de 95%</span>
+                                </td>
+                                {% else %}
+                                <td>
+                                    Não acessível
+                                </td>
+                                {% endif %}
+                                {% endfor %}
                             </tr>
                             {% endfor %}
                         </tbody>
