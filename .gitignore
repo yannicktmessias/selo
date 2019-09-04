@@ -4,6 +4,9 @@ __pycache__
 env
 /static
 .DS_Store
+static_root
+reports
+log.txt
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
