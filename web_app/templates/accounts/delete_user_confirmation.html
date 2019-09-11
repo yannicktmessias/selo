@@ -6,26 +6,26 @@
 
 {% block content %}
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
-            	<div class="row mb-3">
+                <div class="row mb-3">
                     <div class="col-md-12">
-                		<h3>Tem certeza que deseja excluir o gestor?</h3>
-                	</div>
+                        <h3>Tem certeza que deseja excluir o gestor?</h3>
+                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                		<p><b>Nome completo:</b> {{ usr.name }}</p>
-                		<p><b>RF:</b> {{ usr.rf }}</p>
-                	</div>
+                        <p><b>Nome completo:</b> {{ usr.name }}</p>
+                        <p><b>RF:</b> {{ usr.rf }}</p>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 mb-3">
                         <form method="post">
-		                	{% csrf_token %}
-		                	<button class="btn btn-primary btn-block" type="submit">Excluir</button>
-		                </form>
+                            {% csrf_token %}
+                            <button class="btn btn-primary btn-block" type="submit">Excluir</button>
+                        </form>
                     </div>
                     <div class="col-md-2 mb-3">
-                    	<a class="btn btn-primary btn-block" href="{% url 'user_info' usr.rf %}">Cancelar</a>
+                        <a class="btn btn-primary btn-block" href="{% url 'user_info' usr.rf %}">Cancelar</a>
                     </div>
                 </div>
             </div>

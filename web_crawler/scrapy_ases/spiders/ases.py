@@ -2,6 +2,7 @@
 from scrapy import Spider, Selector, FormRequest
 from ..django_adapter import (
     active_pages,
+    page_has_report_today,
     update_page_url,
     save_report_to_database,
 
@@ -17,6 +18,8 @@ class AsesSpider(Spider):
 
     def parse(self, response):
         for page in active_pages():
+            if page_has_report_today(page):
+                continue
             yield FormRequest(
                 url = self.start_url + 'avaliar',
                 callback = self.parse_report,

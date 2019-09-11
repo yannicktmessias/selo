@@ -11,6 +11,10 @@ sys.path.append(django_path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_app.settings')
 django.setup()
 
+from django.conf import settings
+from datetime import datetime, date
+from pytz import timezone
+
 from django.utils.timezone import make_aware
 
 from certifications.models import Page, EvaluationReport
@@ -28,6 +32,19 @@ def active_pages():
         if page.certification.is_active:
             active_pages.append(page)
     return active_pages
+
+def page_has_report_today(page):
+    today = datetime.now(timezone(settings.TIME_ZONE)).date()
+    report_of_the_day = EvaluationReport.objects.filter(
+        page=page,
+        creation_date_time__year=today.year,
+        creation_date_time__month=today.month,
+        creation_date_time__day=today.day,
+    )
+    if report_of_the_day:
+        return True
+    else:
+        return False
 
 def update_page_url(page, url):
     ''' (Page, string)

@@ -19,6 +19,11 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <li role="menuitem">
+                                    <a href="{% url 'new_certification' applicant.cpf_cnpj %}">
+                                        Adicionar novo selo
+                                    </a>
+                                </li>
+                                <li role="menuitem">
                                     <a href="{% url 'edit_applicant' applicant.cpf_cnpj %}">
                                         Editar requerente
                                     </a>

@@ -11,8 +11,8 @@
 {% block content %}
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
                 <form method="post">
-                	{% csrf_token %}
-                	<div class="row">
+                    {% csrf_token %}
+                    <div class="row">
                         <div class="col-md-8 mb-3">
                             <label for="name">Nome completo</label>
                             <input type="text" name="name" maxlength="60" class="form-control" id="name" placeholder="Nome completo" value="{% if form.name.value != None %}{{form.name.value}}{% endif %}" autofocus required>
@@ -42,11 +42,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                        	<label for="permissions">Permissões</label> <br/>
-                        	<select name="permissions" id="permissions">
-								<option value="RO" {% if form.permissions.value == 'RO' %}selected{% endif %}>somente leitura</option>
-								<option value="RW" {% if form.permissions.value == 'RW' %}selected{% endif %}>leitura e escrita</option>
-							</select>
+                            <label for="permissions">Permissões</label> <br/>
+                            <select name="permissions" id="permissions">
+                                <option value="RO" {% if form.permissions.value == 'RO' %}selected{% endif %}>somente leitura</option>
+                                <option value="RW" {% if form.permissions.value == 'RW' %}selected{% endif %}>leitura e escrita</option>
+                            </select>
                             {{ form.permissions.errors }}
                         </div>
                         <div class="col-md-4 mb-3">
@@ -61,14 +61,14 @@
                         </div>
                     </div>
                     {{ form.non_field_errors }}
-                	<div class="row">
-                    	<div class="col-md-2 mb-3">
-                			<button class="btn btn-primary btn-block" type="submit">Salvar</button>
-                		</div>
-                		<div class="col-md-2 mb-3">
-	                    	<a class="btn btn-primary btn-block" href="{% url 'user_info' usr.rf %}">Cancelar</a>
-	                    </div>
-                	</div>
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <button class="btn btn-primary btn-block" type="submit">Salvar</button>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <a class="btn btn-primary btn-block" href="{% url 'user_info' usr.rf %}">Cancelar</a>
+                        </div>
+                    </div>
                 </form>
             </div>
 {% endblock %}

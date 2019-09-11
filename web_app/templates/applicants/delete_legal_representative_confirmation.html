@@ -6,10 +6,10 @@
 
 {% block content %}
             <div class="col-md-9 col-xs-12" id="content" tabindex="-1">
-            	<div class="row mb-3">
+                <div class="row mb-3">
                     <div class="col-md-12">
-                		<h3>Tem certeza que deseja excluir o representante legal?</h3>
-                	</div>
+                        <h3>Tem certeza que deseja excluir o representante legal?</h3>
+                    </div>
                 </div>
                 <div class="row mb-1">
                     <div class="col-md-12">
@@ -24,19 +24,19 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                		<p><b>Nome/Razão Social:</b> {{ applicant.name }}</p>
-                		<p><b>CPF/CNPJ:</b> {{ applicant.cpf_cnpj }}</p>
-                	</div>
+                        <p><b>Nome/Razão Social:</b> {{ applicant.name }}</p>
+                        <p><b>CPF/CNPJ:</b> {{ applicant.cpf_cnpj }}</p>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 mb-3">
                         <form method="post">
-		                	{% csrf_token %}
-		                	<button class="btn btn-primary btn-block" type="submit">Excluir</button>
-		                </form>
+                            {% csrf_token %}
+                            <button class="btn btn-primary btn-block" type="submit">Excluir</button>
+                        </form>
                     </div>
                     <div class="col-md-2 mb-3">
-                    	<a class="btn btn-primary btn-block" href="{% url 'applicant_info' applicant.cpf_cnpj %}">
+                        <a class="btn btn-primary btn-block" href="{% url 'applicant_info' applicant.cpf_cnpj %}">
                             Cancelar
                         </a>
                     </div>

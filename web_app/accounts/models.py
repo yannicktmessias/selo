@@ -89,6 +89,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (READ_WRITE, _('read and write')),
     ]
     permissions = models.CharField(
+        _('permissions'),
         max_length=2,
         choices=PERMISSIONS,
         default=READ_ONLY,

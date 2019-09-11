@@ -208,6 +208,12 @@ def delete_certification_confirmation(request, sei_number):
     applicant = certification.applicant
 
     if request.method == 'POST':
+        applicant_path = os.path.join(reports_path, applicant.cpf_cnpj)
+        certification_path = os.path.join(applicant_path, certification.sei_number)
+
+        if certification.sei_number in os.listdir(applicant_path):
+            shutil.rmtree(certification_path)
+
         certification.delete()
         return redirect('list_certifications')
     else:
