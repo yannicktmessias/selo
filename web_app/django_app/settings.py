@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'applicants',
-    'certifications',
+    'certifications.apps.CertificationsConfig',
 ]
 
 MIDDLEWARE = [
