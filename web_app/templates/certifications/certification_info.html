@@ -188,7 +188,7 @@
                     </select>
                     -->
                 </div>
-                <div class="row">
+                <div class="row mb-3" style="overflow-x: auto; white-space: nowrap;">
                     <table class="table">
                         <thead class="thead-links">
                             <tr>
@@ -202,12 +202,12 @@
                             {% for page in pages %}
                             {% if reports|page_found:page or not last_evaluation %}
                             <tr>
-                                <td>
+                                <td style="text-align: left;">
                                     {{ page.url }}
                                 </td>                            
                             {% else %}
                             <tr class="problem-url">
-                                <td>
+                                <td style="text-align: left;">
                                     {{ page.url }} 
                                     <i aria-hidden="true" class="fas fa-times-circle" title="URL com problemas de acesso"></i>
                                     <span class="sr-only">URL com problemas de acesso</span>
