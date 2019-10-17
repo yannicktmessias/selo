@@ -16,6 +16,8 @@ from .forms import (
 from .models import Certification, Page, EvaluationReport
 from applicants.models import Applicant, LegalRepresentative
 
+from accounts.decorators import read_write_permission_required, admin_required
+
 project_root_path = os.path.dirname(settings.BASE_DIR)
 reports_path = os.path.join(project_root_path, 'reports')
 
@@ -162,6 +164,7 @@ def update_certification_links(certification, link_forms):
             page.delete()
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def edit_certification(request, sei_number):
     certification = Certification.objects.get(sei_number=sei_number)
     applicant = certification.applicant
@@ -199,10 +202,14 @@ def edit_certification(request, sei_number):
         return render(request, 'certifications/edit_certification.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_certification(request, sei_number):
     return redirect('delete_certification_confirmation', sei_number=sei_number)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_certification_confirmation(request, sei_number):
     certification = Certification.objects.get(sei_number=sei_number)
     applicant = certification.applicant
@@ -221,6 +228,7 @@ def delete_certification_confirmation(request, sei_number):
         return render(request, 'certifications/delete_certification_confirmation.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def activate_certification(request, sei_number):
     certification = Certification.objects.get(sei_number=sei_number)
     certification.is_active = True
@@ -228,6 +236,7 @@ def activate_certification(request, sei_number):
     return redirect('certification_info', sei_number=certification.sei_number)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def inactivate_certification(request, sei_number):
     certification = Certification.objects.get(sei_number=sei_number)
     certification.is_active = False
@@ -235,6 +244,7 @@ def inactivate_certification(request, sei_number):
     return redirect('certification_info', sei_number=certification.sei_number)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def new_certification_applicant(request):
     not_found = False
 
@@ -255,6 +265,7 @@ def new_certification_applicant(request):
         return render(request, 'certifications/new_certification_applicant.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def new_certification(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
 

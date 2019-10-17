@@ -12,6 +12,8 @@ from .forms import (
 )
 from .models import Applicant, LegalRepresentative
 
+from accounts.decorators import read_write_permission_required, admin_required
+
 project_root_path = os.path.dirname(settings.BASE_DIR)
 reports_path = os.path.join(project_root_path, 'reports')
 
@@ -25,6 +27,7 @@ def applicant_info(request, cpf_cnpj):
     return render(request, 'applicants/applicant_info.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def edit_applicant(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
 
@@ -44,6 +47,7 @@ def edit_applicant(request, cpf_cnpj):
         return render(request, 'applicants/edit_applicant.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def edit_legal_representative(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
     legal_representative = LegalRepresentative.objects.get(applicant_represented=applicant)
@@ -64,10 +68,14 @@ def edit_legal_representative(request, cpf_cnpj):
         return render(request, 'applicants/edit_legal_representative.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_legal_representative(request, cpf_cnpj):
     return redirect('delete_legal_representative_confirmation', cpf_cnpj=cpf_cnpj)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_legal_representative_confirmation(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
     legal_representative = LegalRepresentative.objects.get(applicant_represented=applicant)
@@ -80,6 +88,7 @@ def delete_legal_representative_confirmation(request, cpf_cnpj):
         return render(request, 'applicants/delete_legal_representative_confirmation.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def new_legal_representative(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
 
@@ -100,10 +109,14 @@ def new_legal_representative(request, cpf_cnpj):
         return render(request, 'applicants/new_legal_representative.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_applicant(request, cpf_cnpj):
     return redirect('delete_applicant_confirmation', cpf_cnpj=cpf_cnpj)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_applicant_confirmation(request, cpf_cnpj):
     applicant = Applicant.objects.get(cpf_cnpj=cpf_cnpj)
 
@@ -129,6 +142,7 @@ def create_legal_representative_form_from_post_request(post):
     return LegalRepresentativeCreationForm(args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
 def new_applicant(request):
     if request.method == 'POST':
         form = ApplicantCreationForm(request.POST)

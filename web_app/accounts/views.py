@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from .models import User
+from .decorators import read_write_permission_required, admin_required
 
 @login_required(login_url='login')
 def user_info(request, rf = None):
@@ -12,6 +13,8 @@ def user_info(request, rf = None):
     return render(request, 'accounts/user_info.html', {'usr': usr})
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def edit_user(request, rf = None):
     if rf == None:
         rf = request.user.rf
@@ -33,6 +36,8 @@ def edit_user(request, rf = None):
         return render(request, 'accounts/edit_user.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def change_password(request, rf = None):
     if rf == None:
         rf = request.user.rf
@@ -54,10 +59,14 @@ def change_password(request, rf = None):
         return render(request, 'accounts/change_password.html', args)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_user(request, rf):
     return redirect('delete_user_confirmation', rf=rf)
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def delete_user_confirmation(request, rf):
     usr = User.objects.get(rf=rf)
     
@@ -68,6 +77,8 @@ def delete_user_confirmation(request, rf):
         return render(request, 'accounts/delete_user_confirmation.html', {'usr': usr})
 
 @login_required(login_url='login')
+@read_write_permission_required(login_url='login')
+@admin_required(login_url='login')
 def new_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
