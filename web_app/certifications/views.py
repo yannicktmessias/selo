@@ -238,10 +238,19 @@ def activate_certification(request, sei_number):
 @login_required(login_url='login')
 @read_write_permission_required(login_url='login')
 def inactivate_certification(request, sei_number):
+    return redirect('inactivate_certification_confirmation', sei_number=sei_number)
+
+def inactivate_certification_confirmation(request, sei_number):
     certification = Certification.objects.get(sei_number=sei_number)
-    certification.is_active = False
-    certification.save()
-    return redirect('certification_info', sei_number=certification.sei_number)
+    applicant = certification.applicant
+
+    if request.method == 'POST':
+        certification.is_active = False
+        certification.save()
+        return redirect('certification_info', sei_number=certification.sei_number)
+    else:
+        args = {'certification': certification, 'applicant': applicant}
+        return render(request, 'certifications/inactivate_certification_confirmation.html', args)
 
 @login_required(login_url='login')
 @read_write_permission_required(login_url='login')
@@ -325,6 +334,9 @@ def search_certification(request):
     if where == 'domain':
         certifications = Certification.objects.filter(domain__icontains=search_term)
         where = 'Domínio'
+    elif where == 'sei_number':
+        certifications = Certification.objects.filter(sei_number__icontains=search_term)
+        where = 'Processo SEI'
     elif where == 'applicant':
         certifications = Certification.objects.filter(applicant__name__icontains=search_term)
         where = 'Requerente'

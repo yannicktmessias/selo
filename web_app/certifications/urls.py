@@ -11,6 +11,7 @@ urlpatterns = [
     path('<int:sei_number>/confirmar_excluir/', views.delete_certification_confirmation, name='delete_certification_confirmation'),
     path('<int:sei_number>/ativar/', views.activate_certification, name='activate_certification'),
     path('<int:sei_number>/inativar/', views.inactivate_certification, name='inactivate_certification'),
+    path('<int:sei_number>/confirmar_inativar/', views.inactivate_certification_confirmation, name='inactivate_certification_confirmation'),
     path('novo/', views.new_certification_applicant, name='new_certification_applicant'),
     path('novo/<int:cpf_cnpj>/', views.new_certification, name='new_certification'),
     path('todos/', views.list_certifications, name='list_certifications'),
