@@ -82,7 +82,7 @@ class AsesSpider(Spider):
                 int(time[1]),
                 int(time[2]),
             )
-            grade = int(grade[0].split('%')[0].split(',')[0])
+            grade = int(float(grade[0].split('%')[0].replace(',', '.')))
             
             save_report_to_database(page, grade, date_time)
             
