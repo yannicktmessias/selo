@@ -9,6 +9,8 @@ from ..django_adapter import (
     reports_path,
 )
 from datetime import datetime
+from urllib import request
+import chardet
 import os
 
 class AsesSpider(Spider):
@@ -20,6 +22,34 @@ class AsesSpider(Spider):
         for page in active_pages():
             if page_has_report_today(page):
                 continue
+
+            url = page.url.strip()
+            try:
+                raw_source_code = request.urlopen(url).read()
+            except:
+                self.logger.error("URL inválida: '" + str(url) + "'")
+                continue
+            encoding = chardet.detect(raw_source_code)['encoding']
+            source_code = raw_source_code.decode(encoding)
+
+            yield FormRequest(
+                url = self.start_url + 'avaliar-codigo',
+                callback = self.parse_report,
+                formdata = {
+                    'mark': 'true',
+                    'content': 'true',
+                    'presentation': 'true',
+                    'multimedia': 'true',
+                    'form': 'true',
+                    'behavior': 'true',
+                    'html': source_code,
+                    'executar': 'Executar',
+                },
+                meta = {
+                    'page': page,
+                }
+            )
+            '''
             yield FormRequest(
                 url = self.start_url + 'avaliar',
                 callback = self.parse_report,
@@ -37,6 +67,7 @@ class AsesSpider(Spider):
                     'page': page,
                 }
             )
+            '''
     
     def parse_report(self, response):
         body_sel = Selector(response)
@@ -59,6 +90,9 @@ class AsesSpider(Spider):
         grade = body_sel.xpath("//div[@id='webaxscore']//span//text()").extract()
 
         page = response.meta['page']
+
+        if url == '':
+            url = page.url.strip()
 
         if len(grade) == 0:
             diagnosis = body_sel.xpath("//div[@id='errorDesc']//div[@class='alert alert-error']//p//text()").extract()
