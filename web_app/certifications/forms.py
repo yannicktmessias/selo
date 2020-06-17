@@ -15,13 +15,10 @@ class CertificationCreationForm(ModelForm):
         model = Certification
         fields = (
             'sei_number',
-            'sei_protocol',
             'code',
             'domain',
             'request_date',
-            'refusal_date',
             'grant_date',
-            'renewal_date',
             'sei_nature',
         )
 
@@ -30,13 +27,9 @@ class CertificationChangeForm(ModelForm):
     class Meta:
         model = Certification
         fields = (
-            'sei_protocol',
             'domain',
-            'request_date',
-            'refusal_date',
             'grant_date',
             'renewal_date',
-            'sei_nature',
         )
 
 class PageCreationForm(ModelForm):

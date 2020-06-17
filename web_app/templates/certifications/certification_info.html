@@ -85,10 +85,6 @@
                                             {{ certification.sei_number }}
                                         </li>
                                         <li>
-                                            <b>Protocolo:</b>
-                                            {{ certification.sei_protocol }}
-                                        </li>
-                                        <li>
                                             <b>Natureza:</b>
                                             {% if certification.sei_nature == 'PB' %}
                                             Pública
@@ -101,10 +97,6 @@
                                         <li>
                                             <b>Data de requerimento:</b> 
                                             {{ certification.request_date|date:"d/m/Y" }}
-                                        </li>
-                                        <li>
-                                            <b>Data de indeferimento:</b> 
-                                            {{ certification.refusal_date|date:"d/m/Y" }}
                                         </li>
                                     </ul>
                                     <li>

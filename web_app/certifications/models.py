@@ -24,11 +24,6 @@ class Certification(models.Model):
             'unique': _("A certification with that SEI process number already exists."),
         },
     )
-    sei_protocol = models.CharField(
-        _('SEI process protocol'),
-        max_length = 20,
-        help_text = _('Required.'),
-    )
     domain = models.CharField(
         _('domain'),
         max_length = 100,
@@ -49,15 +44,11 @@ class Certification(models.Model):
     request_date = models.DateTimeField(
         _('request date'),
     )
-    refusal_date = models.DateTimeField(
-        _('refusal date'),
-    )
 #   Certification
     code = models.CharField(
         _('code'),
         max_length = 20,
         help_text = _('Required.'),
-        validators = [NumericValidator()],
     )
     grant_date = models.DateTimeField(
         _('grant date'),

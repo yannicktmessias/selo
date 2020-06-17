@@ -286,6 +286,7 @@ def new_certification(request, cpf_cnpj):
             certification.applicant = applicant
             if certification.domain[-1] != '/':
                 certification.domain += '/'
+            certification.renewal_date = certification.grant_date + timedelta(days = 730)
             certification.save()
             certification = Certification.objects.get(sei_number=request.POST['sei_number'])
             update_certification_links(certification, link_forms)
