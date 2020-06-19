@@ -109,6 +109,14 @@ body {
     margin-top: 20px;
 }
 
+.x-wrapper {
+    overflow-x: auto;
+}
+
+thead {
+    white-space: nowrap;
+}
+
 .thead-selos {
     background-color: #eee;
 }
@@ -179,6 +187,7 @@ body {
 .tbody-links tr td {
     text-align: center;
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 .thead-links tr th:first-child,

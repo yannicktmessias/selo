@@ -37,24 +37,24 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 x-wrapper">
                         {% if certifications %}
                         <table class="table">
                             <thead class="thead-selos">
                                 <tr>
-                                    <th style="width: 23%;">Domínio</th>
-                                    <th style="width: 18%;">Requerente</th>
-                                    <th style="width: 12%;">Data da concessão</th>
-                                    <th style="width: 12%;">Links abaixo de 95%</th>
-                                    <th style="width: 12%;">Links acima de 95%</th>
-                                    <th>Última avaliação</th>
+                                    <th>Domínio</th>
+                                    <th style="padding-left: 50px; padding-right: 50px;" >Requerente</th>
+                                    <th>Data da<br />concessão</th>
+                                    <th>Links abaixo<br />de 95%</th>
+                                    <th>Links acima<br />de 95%</th>
+                                    <th>Última<br />avaliação</th>
                                     <th></th>`
                                 </tr>
                             </thead>
                             <tbody class="tbody-selos">
                                 {% for certification in certifications %}
                                 <tr class="{% if below_links_count|get_item:certification %} need-attention {% endif %}">
-                                    <td>{{ certification.domain }}</td>
+                                    <td style="text-align: left;">{{ certification.domain }}</td>
                                     <td>{{ certification.applicant.name }}</td>
                                     <td>{{ certification.grant_date|date:"d/m/Y" }}</td>
                                     <td>
@@ -68,7 +68,7 @@
                                     {% if last_evaluation|get_item:certification %}
                                     <td>{{ last_evaluation|get_item:certification|date:'d/m/Y H:i' }}</td>
                                     {% else %}
-                                    <td>Nunca</td>
+                                    <td>Nunca<br /><br /></td>
                                     {% endif %}
                                     <td>
                                         <a class="domain-detail-link" href="{% url 'certification_info' certification.sei_number %}" aria-label="Visualizar detalhes do domínio {{ certification.domain }}">
