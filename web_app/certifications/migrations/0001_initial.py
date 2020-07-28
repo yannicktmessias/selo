@@ -20,11 +20,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('sei_number', models.CharField(error_messages={'unique': 'A certification with that SEI process number already exists.'}, help_text='Required.', max_length=20, unique=True, validators=[accounts.validators.NumericValidator()], verbose_name='SEI process number')),
-                ('sei_protocol', models.CharField(help_text='Required.', max_length=20, verbose_name='SEI process protocol')),
                 ('domain', models.CharField(help_text='Required.', max_length=100, verbose_name='domain')),
                 ('sei_nature', models.CharField(choices=[('PB', 'public'), ('PV', 'private')], default='PV', max_length=2, verbose_name='SEI process nature')),
                 ('request_date', models.DateTimeField(verbose_name='request date')),
-                ('refusal_date', models.DateTimeField(verbose_name='refusal date')),
                 ('code', models.CharField(help_text='Required.', max_length=20, validators=[accounts.validators.NumericValidator()], verbose_name='code')),
                 ('grant_date', models.DateTimeField(verbose_name='grant date')),
                 ('renewal_date', models.DateTimeField(verbose_name='renewal date')),
