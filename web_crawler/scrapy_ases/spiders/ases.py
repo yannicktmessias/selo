@@ -47,6 +47,7 @@ class AsesSpider(Spider):
                 },
                 meta = {
                     'page': page,
+                    'source_code': True,
                 }
             )
             '''
@@ -65,6 +66,7 @@ class AsesSpider(Spider):
                 },
                 meta = {
                     'page': page,
+                    'source_code': False,
                 }
             )
             '''
@@ -94,14 +96,35 @@ class AsesSpider(Spider):
         if url == '':
             url = page.url.strip()
 
-        if len(grade) == 0:
+        if len(grade) == 0 or grade[0] == '%':
             diagnosis = body_sel.xpath("//div[@id='errorDesc']//div[@class='alert alert-error']//p//text()").extract()
             if len(diagnosis) == 0:
-                self.logger.error("URL inválida: '" + str(response.meta['page'].url) + "'")
+                if response.meta['source_code']:
+                    yield FormRequest(
+                        url = self.start_url + 'avaliar',
+                        callback = self.parse_report,
+                        formdata = {
+                            'mark': 'true',
+                            'content': 'true',
+                            'presentation': 'true',
+                            'multimedia': 'true',
+                            'form': 'true',
+                            'behavior': 'true',
+                            'url': url,
+                            'executar': 'Executar',
+                        },
+                        meta = {
+                            'page': page,
+                            'source_code': False,
+                        }
+                    )
+                else:
+                    diagnosis = "\nURL inválida"
+                    self.logger.error("Falha ao avaliar '" + str(url) + "'" + diagnosis)
 
             else:
                 diagnosis = "\nDiagnóstico do Ases: '" + str(diagnosis[0]) + "'"
-                self.logger.error("Falha ao avaliar '" + str(response.meta['page'].url) + "'" + diagnosis)
+                self.logger.error("Falha ao avaliar '" + str(url) + "'" + diagnosis)
 
         else:
             update_page_url(page, url)
