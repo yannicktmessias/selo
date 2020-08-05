@@ -12,16 +12,23 @@ from datetime import datetime
 from urllib import request
 import chardet
 import os
+import time
 
 class AsesSpider(Spider):
     name = 'ases'
-    start_url = 'http://asesweb.governoeletronico.gov.br/ases/'
+    start_url = 'http://localhost:8080/ases/'
     start_urls = [start_url]
 
     def parse(self, response):
         for page in active_pages():
             if page_has_report_today(page):
                 continue
+
+            total_memory, used_memory = map(int, os.popen('free -t -m').readlines()[-1].split()[1:3])
+            if used_memory/total_memory > 0.8:
+                self.logger.error("System out of memory ("+str(used_memory)+" / "+str(total_memory)+").\nRestarting Tomcat7... ")
+                os.system('sudo systemctl restart tomcat7')
+                time.sleep(60)
 
             url = page.url.strip()
             try:

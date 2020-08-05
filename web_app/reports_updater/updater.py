@@ -13,7 +13,7 @@ def update_reports_sh():
 
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(update_reports_sh, 'interval', hours=1)
+    scheduler.add_job(update_reports_sh, 'interval', hours=2)
     scheduler.start()
 
 if __name__ == '__main__' :
