@@ -2,20 +2,10 @@ from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-import os
 
 from applicants.models import Applicant, LegalRepresentative
 from certifications.models import Certification, Page, EvaluationReport
 from certifications.views import get_past_days, get_past_reports
-
-project_root_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-crawler_path = os.path.join(project_root_path, 'web_crawler')
-python_path = os.path.join(project_root_path, 'env', 'bin', 'python')
-
-def update_reports_sh():
-    bashCommand = "cd " + crawler_path + "\n"
-    bashCommand += python_path + " -m scrapy crawl ases --set LOG_LEVEL=WARNING --logfile log.txt\n"
-    os.system(bashCommand)
 
 def send_bad_evaluation_alerts():
     today = datetime.now().date()
@@ -68,6 +58,7 @@ def send_bad_evaluation_alerts():
             if legal_representative:
                 legal_representative = legal_representative[0]
                 receivers.append(legal_representative.email)
+            receivers.append('acessibilidadedigital@prefeitura.sp.gov.br')
 
             send_mail(
                 subject, 
@@ -115,16 +106,13 @@ def send_weekly_evaluation_reports():
 
 def start():
     scheduler1 = BackgroundScheduler()
-    scheduler1.add_job(update_reports_sh, 'interval', hours=2, max_instances=1)
+    scheduler1.add_job(send_bad_evaluation_alerts, 'cron', hour=10, max_instances=1)
     scheduler1.start()
 
     scheduler2 = BackgroundScheduler()
-    scheduler2.add_job(send_bad_evaluation_alerts, 'cron', hour=10, max_instances=1)
+    scheduler2.add_job(send_weekly_evaluation_reports, 'cron', day_of_week='sun', hour=12, max_instances=1)
     scheduler2.start()
 
-    scheduler3 = BackgroundScheduler()
-    scheduler3.add_job(send_weekly_evaluation_reports, 'cron', day_of_week='sun', hour=12, max_instances=1)
-    scheduler3.start()
-
 if __name__ == '__main__' :
-    update_reports_sh()
+    send_bad_evaluation_alerts()
+    send_weekly_evaluation_reports()

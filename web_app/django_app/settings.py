@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 
     'accounts',
     'applicants',
-    'certifications.apps.CertificationsConfig',
+    'certifications',
+    'schedules.apps.SchedulesConfig',
 ]
 
 MIDDLEWARE = [
