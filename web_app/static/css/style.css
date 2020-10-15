@@ -4,6 +4,10 @@ body {
     overflow-x: hidden;
 }
 
+h2 {
+    font-size: 22px;
+}
+
 .header {
     background-color: #1E1A17;
     padding: 5px 15px 15px 15px;
