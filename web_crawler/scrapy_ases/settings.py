@@ -24,6 +24,9 @@ ROBOTSTXT_OBEY = False
 # Disable filtering of duplicate requests
 DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
+# Amount of time (in secs) that the downloader will wait before timing out
+DOWNLOAD_TIMEOUT = 600
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 

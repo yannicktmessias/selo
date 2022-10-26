@@ -10,6 +10,8 @@ from ..django_adapter import (
 )
 from datetime import datetime
 from urllib import request
+from urllib.error import HTTPError, URLError
+from urllib import parse
 import chardet
 import os
 import time
@@ -29,15 +31,44 @@ class AsesSpider(Spider):
                 self.logger.error("System out of memory ("+str(used_memory)+" / "+str(total_memory)+").\nRestarting Tomcat7... ")
                 os.system('sudo systemctl restart tomcat7')
                 time.sleep(60)
+                last_tomcat_log = os.popen('journalctl -u tomcat7 | tail -1').readlines()[0]
+                if 'Started' not in last_tomcat_log:
+                    self.logger.error("Tomcat failed to restart.")
 
-            url = page.url.strip()
+            last_tomcat_log = os.popen('journalctl -u tomcat7 | tail -1').readlines()[0]
+            if 'Invalid' in last_tomcat_log:
+                self.logger.error("Tomcat found a problem.\nRestarting Tomcat7... ")
+                os.system('sudo systemctl restart tomcat7')
+                time.sleep(60)
+                last_tomcat_log = os.popen('journalctl -u tomcat7 | tail -1').readlines()[0]
+                if 'Started' not in last_tomcat_log:
+                    self.logger.error("Tomcat failed to restart.")
+
+            url = page.url.replace(' ', '')
+
+            # in case url is not ascii
+            scheme, netloc, path, query, fragment = parse.urlsplit(url)
+            path = parse.quote(path)
+            url = parse.urlunsplit((scheme, netloc, path, query, fragment))
+
             try:
-                raw_source_code = request.urlopen(url).read()
-            except:
-                self.logger.error("URL inválida: '" + str(url) + "'")
+                url_request = request.Request(url, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'})
+                with request.urlopen(url_request, timeout=30) as url_response:
+                    raw_source_code = url_response.read()
+            except HTTPError as error:
+                self.logger.error("HTTP Status " + str(error.status) + ": '" + str(url) + "' " + str(error.reason))
+                continue
+            except URLError as error:
+                self.logger.error("URL inválida: '" + str(url) + "', " + str(error.reason))
+                continue
+            except TimeoutError:
+                self.logger.error("Request timed out")
                 continue
             encoding = chardet.detect(raw_source_code)['encoding']
-            source_code = raw_source_code.decode(encoding)
+            try:
+                source_code = raw_source_code.decode(encoding)
+            except:
+                source_code = raw_source_code.decode('utf-8')
 
             yield FormRequest(
                 url = self.start_url + 'avaliar-codigo',
@@ -68,7 +99,7 @@ class AsesSpider(Spider):
                     'multimedia': 'true',
                     'form': 'true',
                     'behavior': 'true',
-                    'url': page.url.strip(),
+                    'url': page.url.replace(' ', ''),
                     'executar': 'Executar',
                 },
                 meta = {
@@ -77,7 +108,7 @@ class AsesSpider(Spider):
                 }
             )
             '''
-    
+
     def parse_report(self, response):
         body_sel = Selector(response)
         
@@ -88,7 +119,7 @@ class AsesSpider(Spider):
         intro = body_sel.xpath("//div[@class='tile --NOVALUE--']//text()").extract()
         for text in intro:
             if url == '1':
-                url = text.strip()
+                url = text.replace(' ', '')
             if date_time == '1':
                 date_time = text.strip()
                 break
@@ -101,7 +132,7 @@ class AsesSpider(Spider):
         page = response.meta['page']
 
         if url == '':
-            url = page.url.strip()
+            url = page.url.replace(' ', '')
 
         if len(grade) == 0 or grade[0] == '%':
             diagnosis = body_sel.xpath("//div[@id='errorDesc']//div[@class='alert alert-error']//p//text()").extract()
@@ -141,7 +172,7 @@ class AsesSpider(Spider):
             date_time = datetime(
                 int(date[2]),
                 int(date[1]),
-                int(date[0]), 
+                int(date[0]),
                 int(time[0]),
                 int(time[1]),
                 int(time[2]),
