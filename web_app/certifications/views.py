@@ -7,6 +7,9 @@ from pytz import timezone
 import os
 import shutil
 
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Manager
+
 from .forms import (
     CertificationApplicantForm,
     CertificationCreationForm,
@@ -301,24 +304,31 @@ def new_certification(request, cpf_cnpj):
         args = {'form': form, 'applicant': applicant, 'link_forms': link_forms}
         return render(request, 'certifications/new_certification.html', args)
 
+
+def get_certification_status(certification, last_evaluation, above_links_count, below_links_count):
+    pages = Page.objects.filter(certification=certification)
+    dates = get_past_days(4)
+    reports = get_past_reports(pages, dates)
+    certification_reports = EvaluationReport.objects.filter(page__certification=certification)
+    if certification_reports:
+        last_evaluation[certification] = certification_reports.latest('creation_date_time').creation_date_time
+    else:
+        last_evaluation[certification] = ''
+    above_links_count[certification] = get_above_links_count(pages, reports, dates, last_evaluation[certification])
+    below_links_count[certification] = len(pages) - above_links_count[certification]
+
 @login_required(login_url='login')
 def list_certifications(request):
     certifications = Certification.objects.filter(is_active=True)
-    last_evaluation = {}
-    above_links_count = {}
-    below_links_count = {}
 
-    for certification in certifications:
-        pages = Page.objects.filter(certification=certification)
-        dates = get_past_days(7)
-        reports = get_past_reports(pages, dates)
-        certification_reports = EvaluationReport.objects.filter(page__certification=certification)
-        if len(certification_reports) > 0:
-            last_evaluation[certification] = certification_reports.latest('creation_date_time').creation_date_time
-        else:
-            last_evaluation[certification] = ''
-        above_links_count[certification] = get_above_links_count(pages, reports, dates, last_evaluation[certification])
-        below_links_count[certification] = len(pages) - above_links_count[certification]
+    manager = Manager()
+    last_evaluation = manager.dict()
+    above_links_count = manager.dict()
+    below_links_count = manager.dict()
+
+    with ThreadPoolExecutor() as executor:
+        for certification in certifications:
+            executor.submit(get_certification_status, certification, last_evaluation, above_links_count, below_links_count)
 
     args = {
         'certifications': certifications,
@@ -342,24 +352,17 @@ def search_certification(request):
         certifications = Certification.objects.filter(applicant__name__icontains=search_term)
         where = 'Requerente'
     else:
-        certifications = Certification.objects.all()
+        certifications = []
         where = 'indefinido'
 
-    last_evaluation = {}
-    above_links_count = {}
-    below_links_count = {}
+    manager = Manager()
+    last_evaluation = manager.dict()
+    above_links_count = manager.dict()
+    below_links_count = manager.dict()
 
-    for certification in certifications:
-        pages = Page.objects.filter(certification=certification)
-        dates = get_past_days(7)
-        reports = get_past_reports(pages, dates)
-        certification_reports = EvaluationReport.objects.filter(page__certification=certification)
-        if len(certification_reports) > 0:
-            last_evaluation[certification] = certification_reports.latest('creation_date_time').creation_date_time
-        else:
-            last_evaluation[certification] = ''
-        above_links_count[certification] = get_above_links_count(pages, reports, dates, last_evaluation[certification])
-        below_links_count[certification] = len(pages) - above_links_count[certification]
+    with ThreadPoolExecutor() as executor:
+        for certification in certifications:
+            executor.submit(get_certification_status, certification, last_evaluation, above_links_count, below_links_count)
 
     args = {
         'search_term': search_term, 
