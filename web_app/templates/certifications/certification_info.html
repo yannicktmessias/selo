@@ -48,6 +48,11 @@
                                         Excluir selo
                                     </a>
                                 </li>
+                                <li role="menuitem">
+                                    <a href="{% url 'get_list_of_pages_document' certification.sei_number %}">
+                                        Relação de Páginas
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -82,7 +87,7 @@
                                     <ul>
                                         <li>
                                             <b>Número:</b>
-                                            {{ certification.sei_number }}
+                                            {{ certification.sei_number|slice:":4" }}.{{ certification.sei_number|slice:"4:8" }}/{{ certification.sei_number|slice:"8:15" }}-{{ certification.sei_number|slice:"15:" }}
                                         </li>
                                         <li>
                                             <b>Natureza:</b>

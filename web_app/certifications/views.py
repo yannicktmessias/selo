@@ -19,6 +19,13 @@ from .forms import (
 from .models import Certification, Page, EvaluationReport
 from applicants.models import Applicant, LegalRepresentative
 
+from .documents import (
+    evaluation_info_dictionary,
+    page_evaluations_dictionary,
+    make_list_of_pages_document,
+)
+
+
 from accounts.decorators import read_write_permission_required, admin_required
 
 project_root_path = os.path.dirname(settings.BASE_DIR)
@@ -62,7 +69,7 @@ def get_above_links_count(pages, reports, dates, last_evaluation):
         return len(pages)
     above_links_count = 0
     for i, date in enumerate(dates):
-        if date.day == last_evaluation.day:
+        if date.day == last_evaluation.astimezone().day:
             break
     for page in pages:
         if reports[page][i].succeed():
@@ -74,9 +81,9 @@ def certification_info(request, sei_number, number_of_days = 4):
     certification = Certification.objects.get(sei_number=sei_number)
     applicant = certification.applicant
     legal_representative = LegalRepresentative.objects.filter(applicant_represented=applicant)
-    pages = Page.objects.filter(certification=certification)
     if legal_representative:
         legal_representative = legal_representative[0]
+    pages = Page.objects.filter(certification=certification)
     dates = get_past_days(number_of_days)
     reports = get_past_reports(pages, dates)
     certification_reports = EvaluationReport.objects.filter(page__certification=certification)
@@ -377,3 +384,22 @@ def search_certification(request):
 @login_required(login_url='login')
 def index(request):
     return redirect('list_certifications')
+
+
+@login_required(login_url='login')
+def get_list_of_pages_document(request, sei_number):
+    evaluation_date = datetime.now(timezone(settings.TIME_ZONE)).date()
+    evaluation_info = evaluation_info_dictionary(
+        sei_number = sei_number, 
+        evaluation_date = evaluation_date, 
+        evaluator = request.user.name,
+    )
+    page_evaluations = page_evaluations_dictionary(sei_number, evaluation_date)
+
+    document = make_list_of_pages_document(evaluation_info, page_evaluations)
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=relacao_de_paginas.docx'
+    document.save(response)
+
+    return response

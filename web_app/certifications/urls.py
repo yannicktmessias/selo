@@ -16,4 +16,5 @@ urlpatterns = [
     path('<slug:sei_number>/ativar/', views.activate_certification, name='activate_certification'),
     path('<slug:sei_number>/inativar/', views.inactivate_certification, name='inactivate_certification'),
     path('<slug:sei_number>/confirmar_inativar/', views.inactivate_certification_confirmation, name='inactivate_certification_confirmation'),
+    path('<slug:sei_number>/relacao_de_paginas/', views.get_list_of_pages_document, name='get_list_of_pages_document'),
 ]
