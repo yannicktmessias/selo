@@ -83,7 +83,7 @@ def certification_info(request, sei_number, number_of_days = 4):
     legal_representative = LegalRepresentative.objects.filter(applicant_represented=applicant)
     if legal_representative:
         legal_representative = legal_representative[0]
-    pages = Page.objects.filter(certification=certification)
+    pages = Page.objects.filter(certification=certification).order_by('url')
     dates = get_past_days(number_of_days)
     reports = get_past_reports(pages, dates)
     certification_reports = EvaluationReport.objects.filter(page__certification=certification)
@@ -168,7 +168,7 @@ def update_certification_links(certification, link_forms):
             certification_path = os.path.join(applicant_path, certification.sei_number)
             url_path = os.path.join(certification_path, cleaned_url)
 
-            if cleaned_url in os.listdir(certification_path):
+            if os.path.exists(certification_path) and cleaned_url in os.listdir(certification_path):
                 shutil.rmtree(url_path)
 
             page.delete()

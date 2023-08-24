@@ -20,9 +20,9 @@ def evaluation_info_dictionary(sei_number, evaluation_date, evaluator):
 
 def page_evaluations_dictionary(sei_number, evaluation_date):
     certification = Certification.objects.get(sei_number=sei_number)
-    pages = Page.objects.filter(certification=certification)
+    pages = Page.objects.filter(certification=certification).order_by('url')
     page_evaluations = []
-    for i, page in enumerate(pages):
+    for i, page in enumerate(pages, start=1):
         page_reports = EvaluationReport.objects.filter(page=page)
         date_page_report = page_reports.filter(
             creation_date_time__year=evaluation_date.year,
