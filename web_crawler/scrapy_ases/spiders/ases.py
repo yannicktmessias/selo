@@ -61,14 +61,23 @@ class AsesSpider(Spider):
             except URLError as error:
                 self.logger.error("URL inválida: '" + str(url) + "', " + str(error.reason))
                 continue
+            except ConnectionResetError:
+                self.logger.error("'" + str(url) + "' Connection reset")
+                continue
             except TimeoutError:
-                self.logger.error("Request timed out")
+                self.logger.error("'" + str(url) + "' Request timed out")
                 continue
             encoding = chardet.detect(raw_source_code)['encoding']
             try:
                 source_code = raw_source_code.decode(encoding)
             except:
-                source_code = raw_source_code.decode('utf-8')
+                try:
+                    source_code = raw_source_code.decode('utf-8')
+                except:
+                    try:
+                        source_code = raw_source_code.decode('ISO-8859-1')
+                    except:
+                        self.logger.error("Encoding not identified")
 
             yield FormRequest(
                 url = self.start_url + 'avaliar-codigo',
