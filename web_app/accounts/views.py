@@ -35,11 +35,13 @@ def edit_user(request, rf = None):
         return render(request, 'accounts/edit_user.html', args)
 
 @login_required(login_url='login')
-@admin_required(login_url='login')
 def change_password(request, rf = None):
     if rf == None:
         rf = request.user.rf
     usr = User.objects.get(rf=rf)
+
+    if not (request.user.rf == usr.rf or request.user.is_admin):
+        return redirect('login')
 
     if request.method == 'POST':
         form = SetPasswordForm(user=usr, data=request.POST)
